@@ -1,0 +1,1955 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WorthIt — find what’s worth it for you</title>
+<meta name="description" content="Type a goal and see which of the world’s most in-demand tools and free methods are actually worth it for you — personalised scores, time and money value, and a 7-day action plan. Works offline.">
+<meta name="theme-color" content="#2a78d6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232a78d6'/%3E%3Cpath d='M17 33l10 10 20-22' fill='none' stroke='white' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f6f6f3; --surface:#ffffff; --surface-2:#f0efec; --border:#e4e3de; --border-strong:#cfcec7;
+  --text:#0b0b0b; --text-2:#52514e; --muted:#6b6a65;
+  --accent:#2a78d6; --accent-ink:#1c5cab; --accent-soft:#e8f1fc; --track:#cde2fb;
+  --btn:#2a78d6; --btn-hover:#256abf; --on-btn:#ffffff;
+  --good:#0ca30c; --good-ink:#006300; --good-soft:#e6f5e6;
+  --warn:#fab219; --warn-ink:#7a4f00; --warn-soft:#fff3d6;
+  --shadow:0 1px 2px rgba(16,16,15,.05),0 8px 24px rgba(16,16,15,.05);
+  --radius:16px; --radius-sm:10px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#111110; --surface:#1a1a19; --surface-2:#232321; --border:#2e2e2b; --border-strong:#45453f;
+    --text:#f0efec; --text-2:#c3c2b7; --muted:#9e9d93;
+    --accent:#3987e5; --accent-ink:#86b6ef; --accent-soft:#162536; --track:#1d3b5f;
+    --good-ink:#6fd66f; --good-soft:#142a14; --warn-ink:#fab219; --warn-soft:#2c2410;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#111110; --surface:#1a1a19; --surface-2:#232321; --border:#2e2e2b; --border-strong:#45453f;
+  --text:#f0efec; --text-2:#c3c2b7; --muted:#9e9d93;
+  --accent:#3987e5; --accent-ink:#86b6ef; --accent-soft:#162536; --track:#1d3b5f;
+  --good-ink:#6fd66f; --good-soft:#142a14; --warn-ink:#fab219; --warn-soft:#2c2410;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 var(--font);overflow-x:hidden}
+a{color:var(--accent-ink)}
+h1,h2,h3{line-height:1.2;margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+.muted{color:var(--muted)} .small{font-size:13px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--surface);padding:8px 12px;border-radius:8px;z-index:100}
+.skip:focus{left:8px}
+[hidden]{display:none !important}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--border)}
+.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:18px;letter-spacing:-.01em}
+.brand svg{width:30px;height:30px;flex:none}
+.brand small{font-weight:500;color:var(--muted);font-size:13px}
+.top-actions{display:flex;align-items:center;gap:8px}
+.net{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);padding:5px 10px;border:1px solid var(--border);border-radius:999px;background:var(--surface);white-space:nowrap}
+.net .dot{width:8px;height:8px;border-radius:50%;background:var(--good)}
+.net.off .dot{background:var(--warn)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid transparent;border-radius:999px;padding:10px 18px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+.btn.sm{padding:6px 12px;font-size:13px}
+.btn.primary{background:var(--btn);color:var(--on-btn)}
+.btn.primary:hover{background:var(--btn-hover)}
+.btn.ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
+.btn.ghost:hover{border-color:var(--border-strong)}
+.btn.ok{background:var(--good-soft);color:var(--good-ink);border-color:transparent}
+.btn.icon{width:34px;height:34px;padding:0;font-size:16px}
+.btn[aria-pressed="true"].ghost{border-color:var(--accent);color:var(--accent-ink)}
+.link{background:none;border:0;padding:0;color:var(--accent-ink);cursor:pointer;text-align:left;font-weight:600}
+.link:hover{text-decoration:underline}
+.x{background:none;border:0;cursor:pointer;color:var(--muted);font-size:22px;line-height:1;width:32px;height:32px;border-radius:8px}
+.x:hover{background:var(--surface-2);color:var(--text)}
+.x.sm{font-size:18px;width:28px;height:28px}
+
+/* hero */
+.hero{text-align:center;padding:40px 0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);letter-spacing:-.02em;font-weight:750}
+.hero .sub{max-width:680px;margin:12px auto 22px;color:var(--text-2);font-size:16px}
+.search{display:flex;align-items:center;gap:8px;max-width:720px;margin:0 auto;background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;padding:6px 6px 6px 18px;box-shadow:var(--shadow)}
+.search:focus-within{border-color:var(--accent)}
+.search svg{width:20px;height:20px;flex:none;color:var(--muted)}
+.search input{flex:1;min-width:0;border:0;background:transparent;font-size:17px;padding:10px 4px;outline:none}
+.search input::-webkit-search-cancel-button{cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:18px auto 0;max-width:900px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 13px;font-size:14px;cursor:pointer;color:var(--text)}
+.chip:hover{border-color:var(--accent);color:var(--accent-ink)}
+.chip.sm{padding:4px 10px;font-size:12.5px}
+.recent{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;font-size:13px;color:var(--muted)}
+
+/* cards / panels */
+.card,.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.profile{padding:16px 18px;margin-top:12px}
+.profile-title{font-weight:650;margin-bottom:10px}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px 16px;align-items:end}
+.profile-grid label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--text-2);font-weight:550}
+.profile-grid select,.profile-grid input[type=number]{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 10px;font-size:14px;color:var(--text)}
+.money-in{display:flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding-left:10px}
+.money-in input[type=number]{border:0 !important;background:transparent !important;padding-left:0 !important}
+.profile-grid label.check{flex-direction:row;align-items:center;gap:8px;padding:9px 0;font-size:14px;color:var(--text)}
+.check input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+.kpi{padding:14px 16px}
+.kpi .lbl{font-size:13px;color:var(--text-2);font-weight:550}
+.kpi .val{font-size:28px;font-weight:650;letter-spacing:-.02em;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .hint{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start;padding-bottom:110px}
+.results-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}
+.results-head h2{font-size:21px;letter-spacing:-.01em}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;color:var(--text-2);font-weight:600}
+.seg button.on{background:var(--accent-soft);color:var(--accent-ink)}
+.sort{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2)}
+.sort select{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.more-row{text-align:center;margin-top:16px}
+
+/* item card */
+.item{padding:16px;display:flex;flex-direction:column;gap:10px}
+.item-top{display:flex;gap:12px;align-items:flex-start}
+.ico{width:42px;height:42px;flex:none;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;font-size:22px}
+.ico.sm{width:30px;height:30px;font-size:16px;border-radius:9px}
+.item-title{flex:1;min-width:0}
+.item-title h3{font-size:16.5px;font-weight:650}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.tag{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--text-2)}
+.tag.good{background:var(--good-soft);color:var(--good-ink)}
+.tag.hot{background:var(--accent-soft);color:var(--accent-ink)}
+.score{text-align:center;flex:none;min-width:52px}
+.score b{display:block;font-size:24px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.score span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.meter{height:6px;border-radius:999px;background:var(--track);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.why{margin:0;color:var(--text)}
+.why strong{color:var(--text-2);font-weight:650}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:0;padding:10px 12px;background:var(--surface-2);border-radius:var(--radius-sm)}
+.facts div{min-width:0}
+.facts dt{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.facts dd{margin:0;font-size:13.5px;font-weight:550}
+.breakeven{margin:0;font-size:13px;color:var(--text-2)}
+.note{margin:0;font-size:12.5px;color:var(--warn-ink);background:var(--warn-soft);padding:6px 10px;border-radius:8px}
+.item-actions{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;padding-top:4px}
+.item-actions .btn.sm{padding:6px 9px}
+.item-actions .btn.go{width:32px;padding:6px 0;margin-left:auto}
+
+.empty-state{padding:28px;text-align:center}
+.empty-state h3{font-size:18px;margin-bottom:6px}
+
+/* side panels */
+.side{display:flex;flex-direction:column;gap:14px;position:sticky;top:76px}
+.panel{padding:16px}
+.panel h2{font-size:16px;font-weight:650}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.pill{font-size:12px;font-weight:700;background:var(--accent-soft);color:var(--accent-ink);border-radius:999px;padding:2px 9px}
+.panel-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.plan-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.plan-list li{display:flex;gap:10px;align-items:center}
+.pl-main{flex:1;min-width:0}
+.pl-row{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.pl-row .link{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-top:4px}
+.bar{flex:1;height:14px;display:flex;align-items:center;cursor:default;border-left:1px solid var(--border-strong)}
+.bar i{display:block;height:8px;background:var(--accent);border-radius:0 4px 4px 0;min-width:0}
+.bar-val{font-size:12px;color:var(--text-2);min-width:76px;text-align:right;font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);font-size:14px;margin:4px 0}
+.explain-form{display:flex;gap:6px;margin-top:10px}
+.explain-form input{flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:7px 12px;font-size:14px}
+.explain-out{margin-top:10px;font-size:14px}
+.explain-out h3{font-size:15px;margin-bottom:4px}
+.explain-out p{margin:0 0 6px}
+.saved{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.mini{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 6px;font-weight:700}
+.rank{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:14px}
+.rank li{display:flex;gap:6px;align-items:baseline;min-width:0}
+.rank .rk{font-size:12px;color:var(--muted);min-width:28px;font-variant-numeric:tabular-nums}
+.src{font-size:11.5px;color:var(--muted);margin:6px 0 0}
+.panel .chips{justify-content:flex-start;margin:0}
+
+/* tray */
+.tray{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:40;background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:8px 8px 8px 16px;display:flex;align-items:center;gap:8px;max-width:calc(100% - 32px)}
+.tray-items{display:flex;gap:6px;overflow-x:auto;min-width:0}
+.tray-items .chip{white-space:nowrap}
+.tray-lbl{font-size:13px;font-weight:650;white-space:nowrap}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(10,10,10,.45);display:flex;align-items:flex-start;justify-content:center;padding:5vh 16px;overflow-y:auto}
+.modal-card{background:var(--surface);border-radius:20px;width:100%;max-width:720px;box-shadow:0 20px 60px rgba(0,0,0,.3);border:1px solid var(--border)}
+.modal-card.wide{max-width:980px}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border)}
+.modal-head h2{font-size:19px}
+.modal-body{padding:18px}
+.modal-body h3{font-size:15px;margin:16px 0 6px}
+.modal-body ol,.modal-body ul{padding-left:20px;margin:6px 0}
+.modal-body li{margin:3px 0}
+.persona-list{list-style:none;padding:0 !important}
+.persona-list li{padding:8px 10px;background:var(--surface-2);border-radius:8px;margin:6px 0}
+.persona-list b{color:var(--text-2)}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+thead th{background:var(--surface-2);font-size:13px}
+tbody th{font-weight:600;color:var(--text-2);font-size:13px;white-space:nowrap}
+tr:last-child td,tr:last-child th{border-bottom:0}
+.week{list-style:none;padding:0 !important;display:grid;gap:10px}
+.week > li{border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin:0 !important}
+.week h4{margin:0 0 6px;font-size:14px}
+.task{display:flex;gap:8px;align-items:flex-start;font-size:14px;padding:3px 0}
+.task input{margin-top:3px;width:16px;height:16px;accent-color:var(--accent);flex:none}
+.task.done span{text-decoration:line-through;color:var(--muted)}
+.modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.plan-card{border:1px solid var(--border);border-radius:14px;padding:14px}
+.plan-card.pro{border-color:var(--accent);background:var(--accent-soft)}
+.plan-card h3{margin:0 0 4px}
+.price{font-size:24px;font-weight:700}
+.banner{padding:10px 12px;border-radius:10px;background:var(--good-soft);color:var(--good-ink);font-weight:600;font-size:14px;margin-bottom:12px}
+
+/* toast + tooltip */
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:#1f1f1d;color:#f5f5f2;padding:10px 16px;border-radius:12px;font-size:14px;z-index:70;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.tip{position:fixed;z-index:80;pointer-events:none;background:var(--surface);color:var(--text);border:1px solid var(--border-strong);box-shadow:0 6px 20px rgba(0,0,0,.15);border-radius:8px;padding:6px 10px;font-size:13px;max-width:260px}
+
+footer{border-top:1px solid var(--border);padding:24px 0 40px;color:var(--muted);font-size:13px}
+footer p{margin:6px 0}
+
+@media (max-width:1020px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .side{position:static}
+}
+@media (max-width:760px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{padding-top:26px}
+  .brand small,.net-label-long{display:none}
+  .plans{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+}
+@media (max-width:420px){
+  .search{padding-left:12px}
+  .search button{padding:10px 14px}
+  .kpi .val{font-size:22px}
+  .top-actions .btn.primary{padding:6px 10px}
+  .tray{border-radius:16px;flex-wrap:wrap;padding:8px 10px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+@media print{
+  body.print-modal > *:not(#modal){display:none !important}
+  body.print-modal #modal{position:static;background:none;padding:0}
+  body.print-modal .modal-card{box-shadow:none;border:0}
+  body.print-modal .x, body.print-modal .modal-actions{display:none !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#results">Skip to results</a>
+<noscript><p style="padding:16px;text-align:center">WorthIt needs JavaScript turned on to search and personalise results.</p></noscript>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#" id="brandLink" aria-label="WorthIt home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2a78d6"/><path d="M17 33l10 10 20-22" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="appName">WorthIt</span> <small id="appTag">find what’s worth it for you</small>
+    </a>
+    <div class="top-actions">
+      <span class="net" id="net" role="status"><span class="dot" aria-hidden="true"></span><span id="netLabel">Online</span></span>
+      <button class="btn ghost sm" id="installBtn" hidden>Install app</button>
+      <button class="btn ghost icon" id="themeBtn" aria-label="Switch light or dark theme" title="Light / dark">◐</button>
+      <button class="btn primary sm" id="proBtn">Go Pro</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section class="hero">
+    <h1>What do you want to achieve?</h1>
+    <p class="sub">Describe your goal in your own words. We match it against the world’s most in-demand tools and proven free methods — and show what each one is <strong>worth to you</strong>.</p>
+    <form class="search" id="searchForm" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="e.g. earn money from home" aria-label="Describe your goal">
+      <button class="btn primary" type="submit">Find</button>
+    </form>
+    <div class="chips" id="goalChips" aria-label="Popular goals"></div>
+    <div class="recent" id="recent"></div>
+  </section>
+
+  <section class="profile card" aria-labelledby="profileTitle">
+    <div class="profile-title" id="profileTitle">Personalise your results <span class="muted small">· saved on this device only</span></div>
+    <div class="profile-grid">
+      <label>I am a
+        <select id="pPersona"></select>
+      </label>
+      <label>Budget
+        <select id="pBudget">
+          <option value="free">Free only</option>
+          <option value="low">Small (up to ~$10/mo)</option>
+          <option value="any">Any — show the best</option>
+        </select>
+      </label>
+      <label>Mostly using
+        <select id="pDevice">
+          <option value="both">Phone and computer</option>
+          <option value="phone">Phone only</option>
+          <option value="computer">Computer</option>
+        </select>
+      </label>
+      <label title="Roughly: your monthly take-home pay ÷ hours worked. Used only to estimate value.">My hour is worth
+        <span class="money-in"><span id="curSym" aria-hidden="true">$</span><input id="pHourly" type="number" min="0" max="1000000" step="1" inputmode="decimal"></span>
+      </label>
+      <label>Currency
+        <select id="pCurrency"></select>
+      </label>
+      <label class="check"><input type="checkbox" id="pOffline"> Must work offline</label>
+    </div>
+  </section>
+
+  <section class="kpis" aria-label="Your benefit dashboard">
+    <div class="card kpi"><div class="lbl">Matches for you</div><div class="val" id="kMatches">–</div><div class="hint" id="kMatchesHint"></div></div>
+    <div class="card kpi"><div class="lbl">Time back per week</div><div class="val" id="kHours">0 h</div><div class="hint" id="kHoursHint">Add picks to your plan</div></div>
+    <div class="card kpi"><div class="lbl">That time is worth / month</div><div class="val" id="kValue">–</div><div class="hint" id="kValueHint"></div></div>
+    <div class="card kpi"><div class="lbl">Plan cost / month</div><div class="val" id="kCost">Free</div><div class="hint" id="kCostHint">Using free plans</div></div>
+  </section>
+
+  <div class="layout">
+    <section aria-labelledby="resultsTitle">
+      <div class="results-head">
+        <div>
+          <h2 id="resultsTitle">Top picks for you</h2>
+          <div class="muted small" id="resultsMeta" aria-live="polite"></div>
+        </div>
+        <div class="controls">
+          <div class="seg" role="group" aria-label="Show">
+            <button type="button" data-type="all" class="on" aria-pressed="true">All</button>
+            <button type="button" data-type="tool" aria-pressed="false">Tools</button>
+            <button type="button" data-type="method" aria-pressed="false">Free methods</button>
+          </div>
+          <label class="sort">Sort
+            <select id="sort">
+              <option value="score">Worth-it score</option>
+              <option value="free">Free first</option>
+              <option value="easy">Easiest first</option>
+              <option value="time">Most time saved</option>
+            </select>
+          </label>
+          <button class="btn ghost sm" id="shareBtn" type="button">Share</button>
+        </div>
+      </div>
+      <div class="grid" id="results"></div>
+      <div class="more-row" id="moreRow" hidden><button class="btn ghost" id="moreBtn" type="button">Show all</button></div>
+    </section>
+
+    <aside class="side" aria-label="Your plan and tools">
+      <section class="panel" aria-labelledby="planTitle">
+        <div class="panel-head"><h2 id="planTitle">My benefit plan</h2><span class="pill" id="planCount">0</span></div>
+        <div id="planBody"></div>
+        <div class="panel-actions">
+          <button class="btn primary sm" id="weekBtn" type="button">7-day action plan</button>
+          <button class="btn ghost sm" id="exportBtn" type="button">Download</button>
+          <button class="btn ghost sm" id="clearPlanBtn" type="button">Clear</button>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="explainTitle">
+        <h2 id="explainTitle">Explain any concept</h2>
+        <div class="muted small">Live from Wikipedia when online. Offline? We’ll queue it and answer when you reconnect.</div>
+        <form class="explain-form" id="explainForm">
+          <input id="explainQ" type="text" placeholder="e.g. compound interest" aria-label="Concept to explain" autocomplete="off">
+          <button class="btn primary sm" type="submit">Explain</button>
+        </form>
+        <div class="explain-out" id="explainOut" aria-live="polite"></div>
+        <div class="saved" id="savedExplains"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="trendTitle">
+        <h2 id="trendTitle">What the world uses · 2026</h2>
+        <div id="trendBody"></div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong id="footName">WorthIt</strong> · Data as of <span id="dataAsOf"></span> · v<span id="ver"></span> · <button class="link" id="aboutBtn" type="button">About &amp; privacy</button></p>
+    <p>Rankings: Similarweb &amp; Semrush via Wikipedia (Oct 2026). Growth: TheAISelect (Jun 2026). Skills: LinkedIn &amp; World Economic Forum (2026). Prices are approximate starting prices in USD and change often — always check the official site. Time and value figures are rough estimates, not guarantees. Not financial, legal or medical advice.</p>
+    <p>Private by design: no account, no tracking. Your profile and plan stay in this browser.</p>
+  </div>
+</footer>
+
+<div class="tray" id="tray" hidden>
+  <span class="tray-lbl">Compare</span>
+  <div class="tray-items" id="trayItems"></div>
+  <button class="btn primary sm" id="compareBtn" type="button">Compare now</button>
+  <button class="x sm" id="trayClear" type="button" aria-label="Clear comparison">×</button>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-card" id="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head"><h2 id="modalTitle"></h2><button class="x" id="modalClose" type="button" aria-label="Close">×</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =====================================================================
+     CONFIG — the only block you need to edit to launch / monetise.
+     ===================================================================== */
+  var CONFIG = {
+    appName: "WorthIt",
+    tagline: "find what’s worth it for you",
+    version: "1.0.0",
+    dataAsOf: "November 2026",
+    pro: {
+      enabled: false,              // true = enforce the free limits below
+      priceLabel: "$2 / month",
+      yearlyLabel: "or $15 / year",
+      paymentUrl: "",              // your Stripe / Razorpay / Gumroad / Lemon Squeezy payment link
+      freePlanLimit: 5,            // plan items allowed on the free tier (when enabled)
+      unlockHashes: []             // SHA-256 (hex) of unlock codes you send to buyers
+    },
+    wikiLang: "en",
+    wikiTimeoutMs: 8000
+  };
+
+  /* ===================== Reference data ===================== */
+  var CURRENCIES = {
+    USD: { r: 1,    hour: 20,   label: "US dollar" },
+    EUR: { r: 0.86, hour: 20,   label: "Euro" },
+    GBP: { r: 0.75, hour: 18,   label: "British pound" },
+    INR: { r: 88,   hour: 300,  label: "Indian rupee" },
+    CAD: { r: 1.38, hour: 25,   label: "Canadian dollar" },
+    AUD: { r: 1.52, hour: 30,   label: "Australian dollar" },
+    SGD: { r: 1.29, hour: 25,   label: "Singapore dollar" },
+    AED: { r: 3.67, hour: 60,   label: "UAE dirham" },
+    JPY: { r: 150,  hour: 2000, label: "Japanese yen" },
+    BRL: { r: 5.4,  hour: 40,   label: "Brazilian real" },
+    NGN: { r: 1500, hour: 2500, label: "Nigerian naira" },
+    PHP: { r: 57,   hour: 200,  label: "Philippine peso" }
+  };
+
+  var GOALS = {
+    ai: { label: "Use AI", i: "🤖" },
+    earn: { label: "Earn more", i: "💸" },
+    job: { label: "Get a job", i: "💼" },
+    learn: { label: "Learn a skill", i: "🎓" },
+    language: { label: "Languages", i: "🗣️" },
+    study: { label: "Study smarter", i: "📚" },
+    code: { label: "Code & build", i: "💻" },
+    business: { label: "Grow a business", i: "📈" },
+    marketing: { label: "Marketing", i: "📣" },
+    design: { label: "Design", i: "🎨" },
+    video: { label: "Video & content", i: "🎬" },
+    write: { label: "Write better", i: "✍️" },
+    productivity: { label: "Get organised", i: "✅" },
+    money: { label: "Save money", i: "🏦" },
+    health: { label: "Health & mind", i: "🧘" },
+    travel: { label: "Travel", i: "✈️" },
+    research: { label: "Research", i: "🔎" },
+    security: { label: "Stay safe online", i: "🔐" },
+    communicate: { label: "Meet & collaborate", i: "🤝" },
+    data: { label: "Data & spreadsheets", i: "📊" }
+  };
+
+  var PERSONAS = {
+    everyone: { label: "Anyone (general)", goals: ["ai", "money", "security", "productivity", "learn", "health", "travel"] },
+    student: { label: "Student", goals: ["study", "learn", "language", "ai", "research", "code", "write"] },
+    jobseeker: { label: "Job seeker", goals: ["job", "learn", "write", "ai", "earn", "communicate"] },
+    professional: { label: "Working professional", goals: ["productivity", "ai", "communicate", "data", "write", "learn"] },
+    freelancer: { label: "Freelancer", goals: ["earn", "business", "marketing", "productivity", "design", "ai"] },
+    business: { label: "Small business owner", goals: ["business", "marketing", "design", "money", "communicate", "productivity"] },
+    creator: { label: "Content creator", goals: ["video", "design", "marketing", "earn", "write", "ai"] },
+    developer: { label: "Developer / tech", goals: ["code", "ai", "data", "productivity", "job"] },
+    parent: { label: "Parent / home", goals: ["money", "health", "learn", "security", "productivity", "travel"] }
+  };
+
+  var CHIPS = [
+    ["💸", "Earn more", "earn money online from home"],
+    ["💼", "Get a job", "get a job faster resume interview"],
+    ["🤖", "Use AI", "use AI to save time"],
+    ["🎓", "Learn a skill", "learn a new skill free"],
+    ["📈", "Grow a business", "grow my small business get customers"],
+    ["🏦", "Save money", "save money budget"],
+    ["🎬", "Create content", "create videos grow audience"],
+    ["📚", "Study smarter", "study smarter for exams"],
+    ["✅", "Get organised", "get organised stop procrastinating"],
+    ["🔐", "Stay safe online", "stay safe online passwords scams"],
+    ["🗣️", "Learn a language", "learn english language"],
+    ["📴", "Works offline", "works offline no internet"]
+  ];
+
+  var PLACEHOLDERS = ["e.g. earn money from home", "e.g. get my shop found online", "e.g. pass my exams with less stress",
+    "e.g. make videos for Instagram", "e.g. learn coding for free", "e.g. stop wasting money", "e.g. protect my accounts from scams"];
+
+  var KIND_LABEL = { time: "Saves time", income: "Income opportunity", skill: "Builds skills", safety: "Protects you", savings: "Saves money", health: "Health & wellbeing" };
+  var KIND_BASE = { time: 0.35, income: 0.7, skill: 0.6, safety: 0.65, savings: 0.6, health: 0.6 };
+  var EASE = { 1: "Easy", 2: "Some learning", 3: "Advanced" };
+
+  /* Trends (researched Nov 2026) */
+  var TOP_SITES = [[1, "Google Search"], [2, "YouTube", "youtube"], [3, "Facebook"], [4, "Instagram", "instagram"], [5, "ChatGPT", "chatgpt"], [6, "X"],
+    [7, "TikTok", "tiktok"], [8, "WhatsApp", "whatsappbiz"], [9, "Reddit", "reddit"], [11, "Wikipedia", "wikipedia"], [15, "Gemini", "gemini"], [17, "LinkedIn", "linkedin"],
+    [18, "Microsoft 365", "ms365"], [20, "Pinterest", "pinterest"], [25, "Claude", "claude"], [33, "Canva", "canva"], [39, "GitHub", "github"], [48, "Zoom", "zoom"]];
+  var FAST = ["cursor", "perplexity", "elevenlabs", "heygen", "gamma", "claude"];
+  var SKILLS = [["AI literacy", "use AI to save time"], ["Analytical thinking", "data spreadsheets analysis"], ["Data skills", "learn data"],
+    ["Communication", "write better emails"], ["Coding", "learn coding free"], ["Marketing", "marketing grow audience"]];
+
+  /* ===================== Knowledge base =====================
+     t: tool|method  g: goals (first = primary)  k: search keywords  x: generic benefit
+     b: benefit per persona  f: free tier  p: paid from USD/mo  h: est. hours/week saved
+     e: ease 1-3  m: good on phone  o: offline 0 none / 1 partial / 2 full
+     v: value kind  s: 3 quick-start steps  a: alternatives  note: caveat */
+  var KB = [
+    { id: "chatgpt", n: "ChatGPT", i: "🤖", u: "https://chatgpt.com", g: ["ai", "write", "learn", "study", "productivity", "job"],
+      k: "chatgpt gpt openai chatbot assistant ai answer explain email summarize summarise brainstorm homework plan essay cover letter",
+      x: "An all-round AI assistant that drafts, explains, summarises and plans in seconds.",
+      b: { student: "Explains any topic at your level and quizzes you before exams.", jobseeker: "Tailors your CV and cover letter to each job post in minutes.", professional: "Drafts emails, reports and meeting notes so you can focus on decisions.", business: "Writes product descriptions, replies and offers for your shop." },
+      f: 1, p: 20, h: 4, e: 1, m: 1, o: 0,
+      s: ["Create a free account at chatgpt.com or install the app.", "Give it one real task from this week (e.g. ‘rewrite this email to sound friendly’).", "Save your best prompts in a note as your personal prompt library."], a: ["claude", "gemini", "perplexity"] },
+    { id: "claude", n: "Claude", i: "✳️", u: "https://claude.ai", g: ["ai", "write", "code", "research", "study", "productivity"],
+      k: "claude anthropic ai assistant chatbot write writing long documents analyze analyse pdf code reasoning",
+      x: "A careful AI assistant that’s strong at long documents, writing and coding.",
+      b: { student: "Upload long readings and get clear summaries and practice questions.", professional: "Analyses long reports and contracts and drafts polished documents.", developer: "Reads whole codebases and helps write, review and debug code.", freelancer: "Turns rough notes into client-ready proposals." },
+      f: 1, p: 20, h: 4, e: 1, m: 1, o: 0,
+      s: ["Sign up free at claude.ai (web, desktop or mobile).", "Upload a long PDF you need to understand and ask for a 5-point summary.", "Ask it to turn that summary into an action list or a first draft."], a: ["chatgpt", "gemini"] },
+    { id: "gemini", n: "Gemini", i: "♊", u: "https://gemini.google.com", g: ["ai", "research", "write", "productivity", "study"],
+      k: "gemini google bard ai assistant gmail docs android voice",
+      x: "Google’s AI assistant, built into Gmail, Docs and Android phones.",
+      b: { student: "Helps with homework and plugs into Google Docs and Drive.", professional: "Summarises long Gmail threads and drafts replies inside Google apps.", parent: "Plans meals, trips and family schedules by voice on Android." },
+      f: 1, p: 20, h: 3, e: 1, m: 1, o: 0,
+      s: ["Open gemini.google.com with your Google account.", "Ask it to summarise your longest email thread.", "Try voice mode on your phone for everyday questions."], a: ["chatgpt", "claude", "copilot"] },
+    { id: "perplexity", n: "Perplexity", i: "🔎", u: "https://www.perplexity.ai", g: ["research", "ai", "study", "learn"],
+      k: "perplexity ai search answers sources citations research facts",
+      x: "An AI answer engine that replies with cited sources instead of a page of links.",
+      b: { student: "Gives answers with sources you can actually cite.", professional: "Fast market and competitor research with references.", jobseeker: "Research a company in 5 minutes before your interview." },
+      f: 1, p: 20, h: 3, e: 1, m: 1, o: 0,
+      s: ["Open perplexity.ai — no account needed to start.", "Ask something you’d normally search and open 2 of its sources.", "Use a focus mode (e.g. Academic) for more reliable results."], a: ["gemini", "scholar", "chatgpt"] },
+    { id: "notebooklm", n: "NotebookLM", i: "📓", u: "https://notebooklm.google.com", g: ["study", "research", "learn", "ai"],
+      k: "notebooklm google notes study guide podcast audio overview pdf sources quiz flashcards",
+      x: "Turns your own notes, PDFs and videos into study guides, quizzes and audio summaries.",
+      b: { student: "Upload lecture notes and get flashcards, quizzes and a podcast-style recap.", professional: "Ask questions across a pile of reports — answers cite your documents.", creator: "Turn research into an outline for your next video." },
+      f: 1, p: 0, h: 3, e: 1, m: 1, o: 0,
+      s: ["Open notebooklm.google.com and create a notebook.", "Add 2–3 sources (PDFs, Google Docs, YouTube links).", "Generate a study guide or Audio Overview and listen on the go."], a: ["claude", "quizlet"] },
+    { id: "copilot", n: "Microsoft Copilot", i: "🪁", u: "https://copilot.microsoft.com", g: ["ai", "productivity", "write", "data"],
+      k: "copilot microsoft bing word excel powerpoint outlook ai assistant windows edge",
+      x: "Microsoft’s AI assistant across Windows, Edge, Word, Excel and Outlook.",
+      b: { professional: "Drafts in Word, analyses tables in Excel and summarises Teams meetings.", student: "Free AI help built into Windows and the Edge browser." },
+      f: 1, p: 20, h: 3, e: 1, m: 1, o: 0,
+      s: ["Open copilot.microsoft.com or press the Copilot key on Windows.", "Paste a table and ask ‘what are the 3 key trends?’", "If you have Microsoft 365, try Copilot inside Word or Excel."], a: ["chatgpt", "gemini"] },
+    { id: "deepl", n: "DeepL", i: "🌐", u: "https://www.deepl.com", g: ["language", "write", "business"],
+      k: "deepl translate translation translator language documents german french spanish",
+      x: "High-quality translation for text and whole documents, with a natural tone.",
+      b: { business: "Sell abroad by translating listings and emails naturally.", freelancer: "Work with clients in other languages without awkward phrasing.", student: "Understand foreign-language papers in your own language." },
+      f: 1, p: 9, h: 2, e: 1, m: 1, o: 0,
+      s: ["Paste text at deepl.com/translator (free).", "Upload a .docx or .pdf to keep its formatting.", "Click any word for alternatives to fine-tune the tone."], a: ["gtranslate"] },
+    { id: "grammarly", n: "Grammarly", i: "✍️", u: "https://www.grammarly.com", g: ["write", "job", "productivity"],
+      k: "grammarly grammar spelling writing english proofread tone email",
+      x: "Fixes grammar, clarity and tone everywhere you type.",
+      b: { jobseeker: "Error-free CVs and applications — first impressions matter.", professional: "Clear, confident emails in fewer rewrites.", student: "Cleaner essays and fewer marks lost to grammar." },
+      f: 1, p: 12, h: 2, e: 1, m: 1, o: 0,
+      s: ["Install the free browser extension or app.", "Write your next email as normal and accept the suggestions.", "Set your goals (audience, formality) in settings."], a: ["chatgpt", "claude"] },
+    { id: "elevenlabs", n: "ElevenLabs", i: "🎙️", u: "https://elevenlabs.io", g: ["video", "ai", "business"],
+      k: "elevenlabs voice ai text to speech voiceover dubbing narration podcast audiobook clone",
+      x: "Natural-sounding AI voiceovers and dubbing in many languages.",
+      b: { creator: "Voice your videos or dub them into other languages without a studio.", business: "Professional voiceovers for ads and tutorials at a fraction of studio cost.", student: "Listen to your notes as audio while commuting." },
+      f: 1, p: 5, h: 3, e: 1, m: 1, o: 0,
+      s: ["Sign up free (a monthly character allowance is included).", "Paste a short script and pick a voice.", "Download the audio and add it to your video or slides."], a: ["heygen", "capcut"] },
+    { id: "heygen", n: "HeyGen", i: "🧑‍💼", u: "https://www.heygen.com", g: ["video", "business", "marketing", "ai"],
+      k: "heygen ai avatar video presenter translate lip sync spokesperson training",
+      x: "Creates presenter videos with AI avatars and translates videos with lip-sync.",
+      b: { business: "Make product and training videos without cameras or actors.", creator: "Translate your videos into many languages to reach new audiences.", professional: "Turn a slide deck into a narrated explainer video." },
+      f: 1, p: 29, h: 4, e: 2, m: 0, o: 0,
+      s: ["Create a free account and choose a stock avatar.", "Paste a 60-second script and generate your first video.", "Try video translation on an existing clip."], a: ["elevenlabs", "canva"] },
+    { id: "gamma", n: "Gamma", i: "🪄", u: "https://gamma.app", g: ["design", "business", "productivity", "study", "ai"],
+      k: "gamma ai presentation presentations slides deck powerpoint pitch proposal document website",
+      x: "Generates good-looking slide decks, docs and one-page sites from a prompt.",
+      b: { professional: "A client-ready deck in 20 minutes instead of 3 hours.", student: "Turn your notes into a clean class presentation.", business: "Pitch decks and proposals without a designer." },
+      f: 1, p: 8, h: 3, e: 1, m: 0, o: 0,
+      s: ["Sign up at gamma.app (free credits).", "Paste your outline and choose ‘Presentation’.", "Edit the text, then export to PDF or PowerPoint."], a: ["canva", "copilot"] },
+    { id: "cursor", n: "Cursor", i: "⌨️", u: "https://cursor.com", g: ["code", "ai"],
+      k: "cursor ai code editor ide programming developer vscode agent",
+      x: "An AI-first code editor that understands your whole project.",
+      b: { developer: "Edit many files from one instruction and ship features faster.", student: "Learn by asking the editor to explain unfamiliar code.", freelancer: "Deliver client projects faster with AI pair-programming." },
+      f: 1, p: 20, h: 6, e: 2, m: 0, o: 0,
+      s: ["Download Cursor (free tier) — it imports VS Code settings.", "Open a project and ask it to explain the codebase.", "Give the agent one small, clear change and review the diff."], a: ["github", "freecodecamp"] },
+    { id: "github", n: "GitHub + Copilot", i: "🐙", u: "https://github.com", g: ["code", "job", "ai"],
+      k: "github git code repository portfolio open source copilot developer projects",
+      x: "Where code lives — host projects, collaborate and get AI coding help with Copilot.",
+      b: { developer: "Copilot autocompletes code; your repos double as a portfolio.", jobseeker: "A public project portfolio employers can actually check.", student: "The Student Developer Pack unlocks pro tools for free." },
+      f: 1, p: 10, h: 4, e: 2, m: 1, o: 0,
+      s: ["Create a free GitHub account.", "Push one small project with a clear README.", "Enable Copilot’s free tier in your editor."], a: ["cursor", "freecodecamp"] },
+    { id: "canva", n: "Canva", i: "🎨", u: "https://www.canva.com", g: ["design", "marketing", "video", "business"],
+      k: "canva photoshop illustrator design poster logo flyer social media post thumbnail resume cv template presentation invitation",
+      x: "Drag-and-drop design for posts, posters, CVs, slides and short videos.",
+      b: { business: "Professional flyers, menus and social posts without a designer.", creator: "Thumbnails and posts in your brand style in minutes.", jobseeker: "Modern CV templates that stand out.", student: "Polished presentations and posters for projects." },
+      f: 1, p: 15, h: 4, e: 1, m: 1, o: 0,
+      s: ["Sign up free at canva.com.", "Pick a template for something you need this week.", "Save your colours and fonts as a reusable template."], a: ["figma", "gamma", "capcut"] },
+    { id: "capcut", n: "CapCut", i: "🎬", u: "https://www.capcut.com", g: ["video", "marketing"],
+      k: "capcut premiere video editor edit reels shorts tiktok captions subtitles",
+      x: "Easy video editing with auto-captions, templates and effects.",
+      b: { creator: "Auto-captions and trending templates for Reels and Shorts.", business: "Quick product videos straight from your phone." },
+      f: 1, p: 8, h: 3, e: 1, m: 1, o: 1, note: "Availability varies by country (for example, it is not available in India).",
+      s: ["Install the app or use the web editor.", "Import a clip and tap ‘Auto captions’.", "Export in 9:16 for Reels and Shorts."], a: ["canva", "youtube"] },
+    { id: "figma", n: "Figma", i: "🖌️", u: "https://www.figma.com", g: ["design", "code"],
+      k: "figma photoshop sketch adobe ui ux design prototype app website wireframe collaborate",
+      x: "Collaborative design for apps, websites and clickable prototypes.",
+      b: { developer: "Inspect designs and copy measurements and CSS directly.", freelancer: "Share live prototypes with clients for quick feedback.", student: "Free education plan for building a UX portfolio." },
+      f: 1, p: 16, h: 3, e: 2, m: 0, o: 0,
+      s: ["Create a free account.", "Start from a community UI kit.", "Share a prototype link to collect feedback."], a: ["canva"] },
+    { id: "notion", n: "Notion", i: "🗂️", u: "https://www.notion.so", g: ["productivity", "study", "business", "write"],
+      k: "notion notes tasks wiki planner organize organise second brain database projects",
+      x: "Notes, tasks, wikis and simple databases in one flexible workspace.",
+      b: { student: "One place for class notes, deadlines and revision plans.", business: "A free team wiki, simple CRM and task board.", freelancer: "Client portals and project trackers from templates." },
+      f: 1, p: 10, h: 3, e: 2, m: 1, o: 1,
+      s: ["Sign up free and pick a template (e.g. a student planner).", "Move one list you keep in your head into it.", "Review it every morning for a week."], a: ["obsidian", "todoist", "gworkspace"] },
+    { id: "todoist", n: "Todoist", i: "☑️", u: "https://todoist.com", g: ["productivity"],
+      k: "todoist todo to-do tasks reminders planner list",
+      x: "A fast to-do list with natural-language dates and reminders.",
+      b: { professional: "Capture tasks in seconds so nothing slips.", parent: "Shared family lists for groceries and chores." },
+      f: 1, p: 5, h: 2, e: 1, m: 1, o: 1,
+      s: ["Install it on your phone and computer.", "Type tasks naturally: ‘pay rent every 1st’.", "Do a 5-minute weekly review on Sundays."], a: ["notion", "eisenhower"] },
+    { id: "gworkspace", n: "Google Docs, Sheets & Drive", i: "📄", u: "https://drive.google.com", g: ["productivity", "data", "communicate", "write"],
+      k: "google docs sheets drive slides spreadsheet documents share cloud storage collaborate offline budget template",
+      x: "Free online documents, spreadsheets and cloud storage — with an offline mode.",
+      b: { student: "Group projects with live co-editing and version history.", business: "Free invoices, stock sheets and shared folders.", parent: "A family budget sheet everyone can see." },
+      f: 1, p: 2, h: 3, e: 1, m: 1, o: 1,
+      s: ["Open drive.google.com with a Google account.", "Turn on Offline in Drive settings.", "Start from a template (budget, invoice, planner)."], a: ["ms365", "notion"] },
+    { id: "ms365", n: "Microsoft 365", i: "🟦", u: "https://www.microsoft365.com", g: ["productivity", "data", "write", "communicate"],
+      k: "microsoft office 365 word excel powerpoint outlook onedrive teams",
+      x: "Word, Excel, PowerPoint and Outlook — free on the web, full desktop apps with a plan.",
+      b: { professional: "The file formats most employers expect.", student: "Often free through your school or university email.", jobseeker: "Excel is one of the most-requested skills in job posts." },
+      f: 1, p: 10, h: 3, e: 1, m: 1, o: 2,
+      s: ["Use the free web apps at microsoft365.com.", "Check if your school or employer gives you a free licence.", "Install the desktop apps for full offline work."], a: ["gworkspace"] },
+    { id: "obsidian", n: "Obsidian", i: "💎", u: "https://obsidian.md", g: ["productivity", "study", "write"],
+      k: "obsidian notes markdown offline second brain knowledge private local",
+      x: "Private notes stored as plain files on your device — works fully offline.",
+      b: { student: "Link ideas across subjects; nothing is lost when the internet drops.", developer: "Markdown notes next to your code, no lock-in.", professional: "A private, searchable knowledge base." },
+      f: 1, p: 4, h: 2, e: 2, m: 1, o: 2,
+      s: ["Download Obsidian (free) and create a vault folder.", "Write one note per idea; link notes with [[double brackets]].", "Sync through your own cloud folder, or pay for Obsidian Sync."], a: ["notion"] },
+    { id: "zoom", n: "Zoom", i: "📹", u: "https://zoom.us", g: ["communicate", "business", "learn"],
+      k: "zoom video call meeting webinar online class remote interview",
+      x: "Reliable video meetings, classes and webinars.",
+      b: { freelancer: "Professional client calls with screen sharing.", jobseeker: "Practise video interviews by recording yourself.", parent: "Family calls and online classes for kids." },
+      f: 1, p: 15, h: 1, e: 1, m: 1, o: 0,
+      s: ["Install Zoom and add a clear profile photo.", "Test audio and video in settings before your first call.", "Record a 2-minute practice call to see how you come across."], a: ["gworkspace", "whatsappbiz"] },
+    { id: "whatsappbiz", n: "WhatsApp Business", i: "💬", u: "https://business.whatsapp.com", g: ["business", "marketing", "communicate", "earn"],
+      k: "whatsapp business catalog catalogue customers chat orders small shop quick replies",
+      x: "A free business profile, product catalogue and quick replies on WhatsApp.",
+      b: { business: "Take orders where customers already chat — catalogue plus auto-replies.", freelancer: "Keep work chats separate from personal ones, with away messages." },
+      f: 1, p: 0, h: 3, e: 1, m: 1, o: 0,
+      s: ["Install WhatsApp Business (free) with your business number.", "Add your catalogue with photos and prices.", "Set a greeting, an away message and 3 quick replies."], a: ["gbp", "instagram"] },
+    { id: "duolingo", n: "Duolingo", i: "🦉", u: "https://www.duolingo.com", g: ["language", "learn"],
+      k: "duolingo language learn english spanish french german japanese speak app streak",
+      x: "Bite-sized daily language lessons that build a habit.",
+      b: { student: "5 minutes a day keeps a second language moving.", jobseeker: "A second language widens the jobs you can apply for.", parent: "Learn alongside your kids — it feels like a game." },
+      f: 1, p: 13, h: 0, e: 1, m: 1, o: 1,
+      s: ["Install the app and take the placement test.", "Set a 5-minute daily goal and a reminder time.", "Add speaking practice — with a friend or an AI assistant."], a: ["anki", "chatgpt"] },
+    { id: "coursera", n: "Coursera", i: "🎓", u: "https://www.coursera.org", g: ["learn", "job"],
+      k: "coursera courses course certificate online degree university google ibm professional skills",
+      x: "University and industry courses with certificates employers recognise.",
+      b: { jobseeker: "Professional certificates (Google, IBM, Meta) for career switches.", professional: "Upskill in AI, data or management at your own pace.", student: "Audit many courses for free." },
+      f: 1, p: 59, h: 0, e: 2, m: 1, o: 1,
+      s: ["Search a skill and filter by free or Professional Certificate.", "Audit the first week before paying.", "Block 3 fixed hours a week in your calendar."], a: ["khan", "freecodecamp", "youtube"] },
+    { id: "khan", n: "Khan Academy", i: "📐", u: "https://www.khanacademy.org", g: ["learn", "study"],
+      k: "khan academy math maths science free school lessons practice exams kids tutoring",
+      x: "Free world-class lessons and practice from primary school to college.",
+      b: { student: "Free maths, science and exam prep that adapts to you.", parent: "Free tutoring material for your children at any grade." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 0,
+      s: ["Create a free account (or a child account).", "Take a course challenge to find your level.", "Practise 20 minutes, 3 times a week."], a: ["youtube", "coursera"] },
+    { id: "youtube", n: "YouTube", i: "▶️", u: "https://www.youtube.com", g: ["learn", "video", "earn", "marketing"],
+      k: "youtube video videos tutorial learn how to channel creator shorts monetize monetise premium download",
+      x: "The world’s biggest free classroom — and a place to build an audience.",
+      b: { student: "Free tutorials for any subject; watch at 1.5× speed.", creator: "Long videos plus Shorts; the Partner Program pays creators.", business: "How-to videos bring customers who search for solutions." },
+      f: 1, p: 14, h: 0, e: 1, m: 1, o: 1,
+      s: ["Make a ‘Learn’ playlist for one skill.", "Watch at 1.5× and take notes as you go.", "Premium lets you download videos for offline viewing."], a: ["khan", "coursera", "tiktok"] },
+    { id: "freecodecamp", n: "freeCodeCamp", i: "🔥", u: "https://www.freecodecamp.org", g: ["code", "learn", "job"],
+      k: "freecodecamp coding programming learn web development javascript python free certification",
+      x: "A free, project-based coding curriculum with certifications.",
+      b: { student: "Learn to code from zero with real projects, free.", jobseeker: "Build portfolio projects that prove you can do the job.", developer: "Fill gaps in your fundamentals at no cost." },
+      f: 1, p: 0, h: 0, e: 2, m: 1, o: 0,
+      s: ["Start the Responsive Web Design certification.", "Code for 30 minutes a day.", "Publish each project on GitHub."], a: ["github", "khan", "cursor"] },
+    { id: "anki", n: "Anki", i: "🃏", u: "https://apps.ankiweb.net", g: ["study", "language", "learn"],
+      k: "anki flashcards flashcard spaced repetition memorize memorise study exam vocabulary offline",
+      x: "Flashcards with spaced repetition — remember more in less study time. Works offline.",
+      b: { student: "Medical, law and language students rely on it for exams.", jobseeker: "Memorise interview answers and technical terms." },
+      f: 1, p: 0, h: 3, e: 2, m: 1, o: 2, note: "Free on desktop, web and Android; the iPhone app is a one-time purchase.",
+      s: ["Download Anki (free on desktop and Android).", "Make 10 cards from today’s notes — one fact per card.", "Review daily; it schedules what you’re about to forget."], a: ["quizlet", "spaced"] },
+    { id: "quizlet", n: "Quizlet", i: "🗃️", u: "https://quizlet.com", g: ["study", "language"],
+      k: "quizlet flashcards study sets test learn exam",
+      x: "Ready-made flashcard sets and practice tests for almost any subject.",
+      b: { student: "Find sets other students made for your exact course." },
+      f: 1, p: 8, h: 2, e: 1, m: 1, o: 1,
+      s: ["Search your course or textbook name.", "Use Learn mode before a test.", "Make your own set from class notes."], a: ["anki", "notebooklm"] },
+    { id: "kiwix", n: "Kiwix (offline Wikipedia)", i: "📦", u: "https://kiwix.org", g: ["learn", "research", "study"],
+      k: "kiwix offline wikipedia download no internet library education",
+      x: "Download Wikipedia (and more) to read with no internet at all.",
+      b: { student: "Study anywhere, even without data or signal.", parent: "A safe offline encyclopaedia for kids.", everyone: "Knowledge that works on flights, in remote places and during outages." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 2,
+      s: ["Install Kiwix on your phone or computer.", "Download a small Wikipedia edition first.", "Add other libraries: dictionary, TED talks, health guides."], a: ["wikipedia", "offlinefirst"] },
+    { id: "wikipedia", n: "Wikipedia", i: "📚", u: "https://www.wikipedia.org", g: ["research", "learn"],
+      k: "wikipedia encyclopedia encyclopaedia facts research learn free",
+      x: "The free encyclopaedia — a fast first stop for any topic, with sources listed.",
+      b: { student: "Use its reference list to find citable sources." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 1,
+      s: ["Read the summary, then skim the headings.", "Open 2 references at the bottom for depth.", "Switch language for local topics."], a: ["kiwix", "perplexity"] },
+    { id: "scholar", n: "Google Scholar", i: "🏛️", u: "https://scholar.google.com", g: ["research", "study"],
+      k: "google scholar papers research academic citations journal thesis",
+      x: "Search academic papers, see citations and find free PDFs.",
+      b: { student: "Find peer-reviewed sources and copy citations in any style.", professional: "Back decisions with real studies." },
+      f: 1, p: 0, h: 2, e: 2, m: 1, o: 0,
+      s: ["Search your topic in quotes.", "Click ‘Cited by’ to find newer work.", "Use the quote icon to copy a citation."], a: ["perplexity", "notebooklm"] },
+    { id: "linkedin", n: "LinkedIn", i: "💼", u: "https://www.linkedin.com", g: ["job", "business", "marketing"],
+      k: "linkedin jobs profile network networking recruiter career hiring resume cv connections",
+      x: "The professional network — jobs, recruiters and your public CV.",
+      b: { jobseeker: "Recruiters search here daily; ‘Open to work’ helps you get found.", freelancer: "Share results and win clients from your network.", business: "Reach business buyers and hire staff." },
+      f: 1, p: 30, h: 2, e: 1, m: 1, o: 0,
+      s: ["Add a clear photo, a headline with your target role, and 5 key skills.", "Turn on ‘Open to work’ (recruiters-only if you’re employed).", "Post one useful thing you learned each week."], a: ["indeed", "star", "resume"] },
+    { id: "indeed", n: "Indeed", i: "🧭", u: "https://www.indeed.com", g: ["job"],
+      k: "indeed jobs job search apply vacancies hiring local salary",
+      x: "One of the biggest job search engines, with salary info and company reviews.",
+      b: { jobseeker: "Job alerts by title and city — apply in a few clicks." },
+      f: 1, p: 0, h: 2, e: 1, m: 1, o: 0,
+      s: ["Upload your CV and set job alerts.", "Filter by date posted: last 3 days.", "Mirror the top keywords of each posting in your CV."], a: ["linkedin", "glassdoor"] },
+    { id: "glassdoor", n: "Glassdoor", i: "🏢", u: "https://www.glassdoor.com", g: ["job", "research"],
+      k: "glassdoor salary salaries reviews company interview questions",
+      x: "Real salaries, company reviews and interview questions from employees.",
+      b: { jobseeker: "Know the salary range and likely questions before you apply.", professional: "Check whether you’re paid fairly before your next review." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0,
+      s: ["Search your role and city for salary ranges.", "Read the 10 latest reviews of a target company.", "Note common interview questions and practise them."], a: ["linkedin", "indeed"] },
+    { id: "upwork", n: "Upwork", i: "🧑‍💻", u: "https://www.upwork.com", g: ["earn", "job"], v: "income",
+      k: "upwork freelance freelancing freelancer remote work clients gigs projects earn online",
+      x: "A global marketplace to find freelance clients for skilled work.",
+      b: { freelancer: "Global clients in writing, design, development, marketing and more.", jobseeker: "Earn and build experience while you search.", student: "Paid real-world projects for your CV." },
+      f: 1, p: 0, h: 0, e: 2, m: 1, o: 0, note: "Free to join; the platform takes a service fee per contract, and bidding credits cost a little.",
+      s: ["Create a niche profile: one skill, one audience.", "Add 2–3 portfolio samples.", "Send 5 tailored proposals a week, not 50 generic ones."], a: ["fiverr", "linkedin"] },
+    { id: "fiverr", n: "Fiverr", i: "🟢", u: "https://www.fiverr.com", g: ["earn"], v: "income",
+      k: "fiverr freelance freelancing gigs gig sell services logo writing voice editing side hustle earn online",
+      x: "Sell fixed-price ‘gigs’ (logo, editing, voice-over…) to buyers worldwide.",
+      b: { freelancer: "Package one skill as a clear offer buyers can order instantly.", student: "Turn a skill like editing or design into side income." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 0, note: "Free to list; Fiverr keeps a commission on each order.",
+      s: ["Pick one service you can deliver in 1–3 days.", "Write a gig title buyers would search for; add 3 samples.", "Price low for your first reviews, then raise it."], a: ["upwork", "etsy"] },
+    { id: "shopify", n: "Shopify", i: "🛍️", u: "https://www.shopify.com", g: ["business", "earn", "marketing"], v: "income",
+      k: "shopify online store ecommerce e-commerce sell products website shop payments dropshipping",
+      x: "Build your own online store with payments, shipping and apps.",
+      b: { business: "Your own branded store — not just a marketplace listing.", creator: "Sell merch or digital products to your audience." },
+      f: 0, p: 29, h: 0, e: 2, m: 1, o: 0, note: "Free trial, then a monthly plan; prices vary by country and billing period.",
+      s: ["Start the free trial and pick a theme.", "Add 5 products with good photos and clear prices.", "Connect payments and place one test order."], a: ["etsy", "amazonsell", "wix"] },
+    { id: "etsy", n: "Etsy", i: "🧶", u: "https://www.etsy.com", g: ["earn", "business"], v: "income",
+      k: "etsy sell handmade crafts craft vintage digital downloads printables shop",
+      x: "A marketplace for handmade, vintage and digital products with built-in buyers.",
+      b: { business: "Buyers already search Etsy — no need to build traffic first.", creator: "Sell printables and digital downloads with zero inventory.", parent: "Turn a craft hobby into side income from home." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 0, note: "Small listing fee per item plus transaction fees when you sell.",
+      s: ["Open a shop and list 10 items — more listings, more visibility.", "Use the words buyers search in your titles and tags.", "Ask your first buyers for reviews."], a: ["shopify", "amazonsell", "fiverr"] },
+    { id: "amazonsell", n: "Amazon Seller", i: "📦", u: "https://sell.amazon.com", g: ["earn", "business"], v: "income",
+      k: "amazon sell seller central fba marketplace products ecommerce",
+      x: "Sell on the world’s biggest store; let Amazon ship for you with FBA.",
+      b: { business: "Reach a huge base of shoppers who already trust the checkout." },
+      f: 1, p: 40, h: 0, e: 3, m: 1, o: 0, note: "Per-item fee on the Individual plan or a monthly Professional plan, plus referral fees.",
+      s: ["Estimate fees for your category with Amazon’s revenue calculator.", "Start on the Individual plan with 1–3 products.", "Upgrade only when you sell about 40+ items a month."], a: ["etsy", "shopify"] },
+    { id: "gbp", n: "Google Business Profile", i: "📍", u: "https://www.google.com/business/", g: ["business", "marketing"],
+      k: "google business profile maps local shop listing reviews my business near me seo found customers",
+      x: "A free listing on Google Search and Maps for local businesses.",
+      b: { business: "Show up when people search ‘near me’ — with hours, photos and reviews.", freelancer: "Local service providers get calls straight from Maps." },
+      f: 1, p: 0, h: 2, e: 1, m: 1, o: 0,
+      s: ["Claim your business at google.com/business.", "Add opening hours, 10 photos and your main services.", "Ask 5 happy customers for a review this week."], a: ["whatsappbiz", "instagram"] },
+    { id: "instagram", n: "Instagram", i: "📸", u: "https://www.instagram.com", g: ["marketing", "video", "business", "earn"],
+      k: "instagram reels posts stories followers influencer brand shop marketing audience",
+      x: "A visual social network for reaching customers and building an audience with Reels.",
+      b: { creator: "Reels reach new people even when you have few followers.", business: "Show products in action; customers message you to buy." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0,
+      s: ["Switch to a free Professional account to see insights.", "Post 3 Reels a week on one theme.", "Check insights after 2 weeks and repeat what worked."], a: ["tiktok", "pinterest", "canva"] },
+    { id: "tiktok", n: "TikTok", i: "🎵", u: "https://www.tiktok.com", g: ["marketing", "video", "earn"],
+      k: "tiktok short video viral trends creator shop followers audience",
+      x: "Short-video platform where new creators can reach big audiences fast.",
+      b: { creator: "The feed surfaces new creators — great for testing ideas fast.", business: "Product demos and TikTok Shop can sell directly." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0, note: "Availability varies by country.",
+      s: ["Watch your niche for 20 minutes to learn the formats.", "Post one short video a day for 2 weeks.", "Hook viewers in the first 2 seconds."], a: ["instagram", "youtube", "capcut"] },
+    { id: "pinterest", n: "Pinterest", i: "📌", u: "https://www.pinterest.com", g: ["marketing", "design", "business"],
+      k: "pinterest ideas inspiration pins traffic boards recipes decor diy",
+      x: "A visual search engine — pins keep bringing visitors for months.",
+      b: { business: "Long-lasting traffic to your shop or blog.", creator: "Inspiration boards for your next project.", parent: "Ideas for meals, crafts and home on a budget." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0,
+      s: ["Create a free business account.", "Make 3 boards around what your customers search for.", "Pin 5 tall images a week that link to your site."], a: ["instagram", "canva"] },
+    { id: "substack", n: "Substack", i: "📰", u: "https://substack.com", g: ["write", "earn", "marketing"], v: "income",
+      k: "substack newsletter blog writing paid subscribers email audience",
+      x: "Start a free newsletter and switch on paid subscriptions when you’re ready.",
+      b: { creator: "Own your readers’ emails — no algorithm in between.", professional: "Build authority in your field with weekly writing." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 0, note: "Free to start; it takes a share of paid subscriptions only.",
+      s: ["Pick one topic and a weekly schedule.", "Publish your first post and share it with 20 people who’d care.", "Add a welcome email and an about page."], a: ["kit", "linkedin"] },
+    { id: "kit", n: "Kit (email marketing)", i: "✉️", u: "https://kit.com", g: ["marketing", "business", "earn"],
+      k: "kit convertkit email marketing newsletter list automation landing page creator",
+      x: "Email marketing for creators and small businesses, with a free starter plan.",
+      b: { creator: "Collect emails with a free landing page and send newsletters.", business: "Automated welcome emails that sell while you sleep." },
+      f: 1, p: 25, h: 2, e: 2, m: 0, o: 0,
+      s: ["Create a free account and a simple landing page.", "Offer one freebie (checklist or discount) for an email address.", "Write a 3-email welcome sequence."], a: ["substack", "hubspot"] },
+    { id: "hubspot", n: "HubSpot Free CRM", i: "🧲", u: "https://www.hubspot.com/products/crm", g: ["business", "marketing", "productivity"],
+      k: "hubspot crm customers leads sales pipeline contacts deals",
+      x: "A free CRM to track customers, leads and deals in one place.",
+      b: { business: "Never lose a lead — see every customer conversation.", freelancer: "Track proposals and follow-ups in a simple pipeline." },
+      f: 1, p: 20, h: 2, e: 2, m: 1, o: 0,
+      s: ["Sign up for the free CRM.", "Import contacts from a spreadsheet.", "Create a 4-stage deal pipeline and update it weekly."], a: ["notion", "gworkspace"] },
+    { id: "wix", n: "Wix", i: "🌍", u: "https://www.wix.com", g: ["business", "marketing", "design"],
+      k: "wix website builder site portfolio online presence domain booking",
+      x: "Drag-and-drop website builder with templates, bookings and online payments.",
+      b: { freelancer: "A portfolio site in an afternoon.", business: "An online presence with bookings or ordering." },
+      f: 1, p: 17, h: 2, e: 1, m: 1, o: 0,
+      s: ["Pick a template for your industry.", "Add services, prices and a contact form.", "Connect a custom domain when you’re ready."], a: ["shopify", "gbp"] },
+    { id: "wise", n: "Wise", i: "💱", u: "https://wise.com", g: ["money", "travel", "earn"], v: "savings",
+      k: "wise transferwise international money transfer exchange rate currency freelance payments abroad remittance",
+      x: "Send and receive money internationally at the mid-market rate with upfront fees.",
+      b: { freelancer: "Receive payments from foreign clients with lower fees.", parent: "Send money to family abroad for less.", everyone: "Spend abroad without high card mark-ups." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 0, note: "Compare the fee shown in the app with your bank before each transfer.",
+      s: ["Create an account and verify your ID.", "Compare a sample transfer with your bank’s price.", "Get local account details to receive payments."], a: ["gflights"] },
+    { id: "camel", n: "Price trackers (camelcamelcamel)", i: "🐫", u: "https://camelcamelcamel.com", g: ["money"], v: "savings",
+      k: "camelcamelcamel price tracker drop alert history deals amazon discount cheap shopping",
+      x: "See a product’s price history and get an alert when it drops.",
+      b: { parent: "Never pay a ‘sale’ price that is actually normal.", everyone: "Buy at the low point, not the hype point." },
+      f: 1, p: 0, h: 0, e: 1, m: 0, o: 0,
+      s: ["Paste a product link to see its price history.", "Set a target-price alert.", "Pair it with the 24-hour rule before buying."], a: ["rule24"] },
+    { id: "ntc", n: "Nike Training Club", i: "🏃", u: "https://www.nike.com/ntc-app", g: ["health"],
+      k: "nike training club workout fitness exercise home gym yoga free app",
+      x: "Free guided workouts from 5 to 60 minutes — no equipment needed.",
+      b: { parent: "Short home workouts that fit around family life.", professional: "15-minute sessions before or after work." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 0,
+      s: ["Install the app and choose a beginner programme.", "Schedule 3 sessions a week.", "Track how you feel, not just your weight."], a: ["sevenmin", "insight"] },
+    { id: "insight", n: "Insight Timer", i: "🧘", u: "https://insighttimer.com", g: ["health"],
+      k: "insight timer meditation sleep stress anxiety calm mindfulness free",
+      x: "A huge free library of guided meditations and sleep tracks.",
+      b: { student: "Calm exam stress with 10-minute sessions.", professional: "Reset between meetings and sleep better.", parent: "Wind-down audio for you and the kids." },
+      f: 1, p: 10, h: 0, e: 1, m: 1, o: 1,
+      s: ["Install the app and pick a 7-day beginner course.", "Meditate 5 minutes each morning with the timer.", "Try a sleep track tonight."], a: ["boxbreath"] },
+    { id: "mfp", n: "MyFitnessPal", i: "🥗", u: "https://www.myfitnesspal.com", g: ["health"],
+      k: "myfitnesspal calories food diet nutrition weight loss tracker",
+      x: "Track food and nutrients with a giant food database.",
+      b: { everyone: "See what you actually eat — the first step to changing it." },
+      f: 1, p: 20, h: 0, e: 1, m: 1, o: 0,
+      s: ["Log everything for 3 normal days.", "Look at protein, sugar and calories.", "Make one swap, not ten."], a: ["ntc"] },
+    { id: "gflights", n: "Google Flights", i: "✈️", u: "https://www.google.com/travel/flights", g: ["travel", "money"], v: "savings",
+      k: "google flights cheap flight flights price tracking airfare travel tickets",
+      x: "Compare flights and track prices; the date grid shows the cheapest days.",
+      b: { everyone: "Price alerts tell you when to book.", freelancer: "Find the cheapest days for work trips." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0,
+      s: ["Search your route and open the date grid.", "Turn on price tracking.", "Check nearby airports too."], a: ["skyscanner", "booking"] },
+    { id: "skyscanner", n: "Skyscanner", i: "🛫", u: "https://www.skyscanner.net", g: ["travel", "money"], v: "savings",
+      k: "skyscanner flights hotels cars cheap travel everywhere search",
+      x: "Search ‘Everywhere’ to find the cheapest destinations from your city.",
+      b: { student: "Find the cheapest trip for your dates and budget." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0,
+      s: ["Search from your city to ‘Everywhere’.", "Use ‘Whole month’ for flexible dates.", "Set a price alert."], a: ["gflights"] },
+    { id: "booking", n: "Booking.com", i: "🏨", u: "https://www.booking.com", g: ["travel"],
+      k: "booking hotels hotel stays accommodation free cancellation travel",
+      x: "Hotels and stays worldwide, many with free cancellation.",
+      b: { everyone: "Book with free cancellation and rebook if the price drops." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 1,
+      s: ["Filter by free cancellation and a review score of 8+.", "Sort by price and read recent reviews.", "Keep the confirmation saved offline in the app."], a: ["gmaps"] },
+    { id: "gmaps", n: "Google Maps (offline maps)", i: "🗺️", u: "https://maps.google.com", g: ["travel", "business"],
+      k: "google maps navigation directions offline maps transit local",
+      x: "Navigation, transit and reviews — download areas to use without data.",
+      b: { everyone: "Download a city map before you travel and navigate offline.", business: "Customers find you through Maps (pair it with a Business Profile)." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 2,
+      s: ["Open Maps → your profile → Offline maps.", "Download your destination area on Wi-Fi.", "Star the places you plan to visit."], a: ["gtranslate", "gbp"] },
+    { id: "gtranslate", n: "Google Translate", i: "🈯", u: "https://translate.google.com", g: ["language", "travel"],
+      k: "google translate translation offline camera conversation language",
+      x: "Translate text, speech and signs by camera — with offline language packs.",
+      b: { everyone: "Point your camera at menus and signs abroad — even offline." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 2,
+      s: ["Install the app and download offline languages.", "Try camera translation on any text.", "Use conversation mode for two-way chats."], a: ["deepl", "duolingo"] },
+    { id: "bitwarden", n: "Bitwarden", i: "🔐", u: "https://bitwarden.com", g: ["security", "productivity"], v: "safety",
+      k: "bitwarden password manager passwords secure vault autofill",
+      x: "A free, open-source password manager — unique strong passwords everywhere.",
+      b: { everyone: "One master password; no more reused passwords.", business: "Share logins safely with staff." },
+      f: 1, p: 1, h: 1, e: 1, m: 1, o: 1,
+      s: ["Create an account with a long passphrase you’ll remember.", "Install the browser extension and phone app.", "Change your email and banking passwords first."], a: ["twofa", "hibp"] },
+    { id: "hibp", n: "Have I Been Pwned", i: "🛡️", u: "https://haveibeenpwned.com", g: ["security"], v: "safety",
+      k: "have i been pwned breach leak email password hacked data",
+      x: "Check whether your email address appeared in a data breach.",
+      b: { everyone: "Know exactly which passwords to change right now." },
+      f: 1, p: 0, h: 0, e: 1, m: 1, o: 0,
+      s: ["Enter your email address.", "Change the password for any breached site.", "Sign up for alerts about future breaches."], a: ["bitwarden", "twofa"] },
+    { id: "brave", n: "Brave browser", i: "🦁", u: "https://brave.com", g: ["security", "productivity", "money"], v: "safety",
+      k: "brave browser ad blocker adblock privacy fast trackers",
+      x: "A fast browser that blocks ads and trackers by default.",
+      b: { everyone: "Faster pages, fewer ads, less tracking — and less mobile data.", student: "Fewer distractions while studying online." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0,
+      s: ["Install Brave and import your bookmarks.", "Keep Shields on (the default).", "Choose your preferred search engine."], a: ["proton"] },
+    { id: "proton", n: "Proton (Mail, VPN, Pass)", i: "🛰️", u: "https://proton.me", g: ["security"], v: "safety",
+      k: "proton mail vpn encrypted email privacy secure free vpn",
+      x: "Encrypted email and a free VPN with no ads, from Switzerland.",
+      b: { everyone: "Safer public Wi-Fi with a free VPN, plus private email.", freelancer: "Encrypted email for sensitive client files." },
+      f: 1, p: 5, h: 0, e: 1, m: 1, o: 0,
+      s: ["Create a free Proton account.", "Install Proton VPN for public Wi-Fi.", "Use a separate address for sign-ups to cut spam."], a: ["bitwarden", "brave"] },
+    { id: "reddit", n: "Reddit", i: "👽", u: "https://www.reddit.com", g: ["research", "learn"],
+      k: "reddit forum community reviews opinions advice real people subreddit",
+      x: "Communities of real people sharing experience on every topic.",
+      b: { everyone: "Add ‘reddit’ to a search to find honest reviews and advice.", creator: "Learn what your audience actually asks about." },
+      f: 1, p: 0, h: 1, e: 1, m: 1, o: 0,
+      s: ["Join 3 communities for your goal.", "Read the top posts of all time first.", "Search before asking, and give back with answers."], a: ["perplexity"] },
+    { id: "kaggle", n: "Kaggle", i: "📊", u: "https://www.kaggle.com", g: ["data", "code", "learn", "job"],
+      k: "kaggle data science machine learning ml datasets python notebooks courses competitions analysis",
+      x: "Free datasets, notebooks and short courses in data science and machine learning.",
+      b: { jobseeker: "Portfolio projects for data roles.", student: "Free cloud notebooks and short courses.", developer: "Learn machine learning by reading top notebooks." },
+      f: 1, p: 0, h: 0, e: 2, m: 0, o: 0,
+      s: ["Take the free ‘Intro to Machine Learning’ course.", "Copy a popular notebook and change one thing.", "Publish your notebook with a clear write-up."], a: ["freecodecamp", "github"] },
+
+    /* ---------- Free methods (work 100% offline) ---------- */
+    { id: "pomodoro", t: "method", n: "Pomodoro technique", i: "🍅", u: "https://en.wikipedia.org/wiki/Pomodoro_Technique", g: ["productivity", "study"],
+      k: "pomodoro exam exams focus timer procrastination procrastinating concentration 25 minutes study work",
+      x: "Work 25 minutes, break 5. Simple, offline and very effective against procrastination.",
+      b: { student: "Turns ‘study all day’ into focused blocks you can count.", professional: "Protects deep work from constant interruptions." },
+      h: 3, e: 1, s: ["Pick one task and set a 25-minute timer.", "Work until it rings — phone in another room.", "Take 5 minutes off; after 4 rounds take 20."], a: ["eisenhower", "todoist"] },
+    { id: "spaced", t: "method", n: "Spaced repetition + active recall", i: "🧠", u: "https://en.wikipedia.org/wiki/Spaced_repetition", g: ["study", "learn", "language"],
+      k: "spaced repetition active recall memory exam exams study technique remember revise revision",
+      x: "Test yourself at growing intervals instead of re-reading — you remember far more.",
+      b: { student: "Better results with fewer study hours.", jobseeker: "Learn a new tool or language faster for interviews." },
+      h: 3, e: 1, s: ["Close the book and write down what you remember.", "Check the gaps; review tomorrow, then in 3 days, then in a week.", "Use Anki or paper flashcards to automate the schedule."], a: ["anki", "feynman"] },
+    { id: "feynman", t: "method", n: "Feynman technique", i: "🧑‍🏫", u: "https://en.wikipedia.org/wiki/Learning_by_teaching", g: ["learn", "study"],
+      k: "feynman technique explain simple understand learn teach",
+      x: "Explain the idea in simple words as if teaching a child — your gaps show instantly.",
+      b: { student: "Understand instead of memorising — great for maths and science.", professional: "Explain complex work clearly to clients and managers." },
+      h: 2, e: 1, s: ["Write the topic at the top of a page.", "Explain it in plain words a 12-year-old would get.", "Where you get stuck, go back to the source and simplify again."], a: ["spaced"] },
+    { id: "eisenhower", t: "method", n: "Eisenhower matrix", i: "🧮", u: "https://en.wikipedia.org/wiki/Time_management", g: ["productivity"],
+      k: "eisenhower matrix urgent important prioritize prioritise priorities time management overwhelmed",
+      x: "Sort tasks into urgent / important boxes, then do, schedule, delegate or drop.",
+      b: { professional: "Stop firefighting and protect important work.", business: "Decide what to delegate first.", parent: "Cut the mental load of endless to-dos." },
+      h: 2, e: 1, s: ["Draw 4 boxes: Do / Schedule / Delegate / Drop.", "Put every task in one box.", "Only do the ‘Do’ box today."], a: ["pomodoro", "todoist"] },
+    { id: "prompting", t: "method", n: "Prompt writing formula", i: "💡", u: "https://en.wikipedia.org/wiki/Prompt_engineering", g: ["ai", "productivity", "write"],
+      k: "prompt prompts prompting engineering ai chatgpt better answers how to ask ai role context task format",
+      x: "Role · context · task · format — a 4-part formula that makes any AI tool far more useful.",
+      b: { everyone: "Better AI answers on the first try.", professional: "Reusable prompts for your recurring tasks.", student: "Ask AI to tutor you, not just hand over answers." },
+      h: 3, e: 1, s: ["Role: ‘You are an experienced …’", "Context and task: who it’s for and exactly what you need.", "Format: ‘Give me a table / 5 bullets / under 100 words’."], a: ["chatgpt", "claude"] },
+    { id: "star", t: "method", n: "STAR interview method", i: "⭐", u: "https://en.wikipedia.org/wiki/Situation,_task,_action,_result", g: ["job"], v: "skill",
+      k: "star method interview interviews questions answer behavioral behavioural situation task action result",
+      x: "Answer interview questions with Situation, Task, Action, Result — clear and memorable.",
+      b: { jobseeker: "Turn vague answers into stories with numbers.", student: "Ace internship and scholarship interviews." },
+      h: 0, e: 1, s: ["List 5 achievements from work, study or life.", "Write each as S-T-A-R with a number in the Result.", "Practise out loud; record and listen once."], a: ["resume", "glassdoor"] },
+    { id: "resume", t: "method", n: "ATS-friendly CV", i: "📝", u: "https://en.wikipedia.org/wiki/Applicant_tracking_system", g: ["job", "write"], v: "skill",
+      k: "resume cv ats applicant tracking system keywords format job application",
+      x: "A simple layout plus the job post’s keywords, so screening software doesn’t filter you out.",
+      b: { jobseeker: "More interview calls from the same number of applications." },
+      h: 0, e: 1, s: ["Use one column, standard headings, no tables or images.", "Mirror 5–8 exact keywords from the job post.", "Quantify results (‘cut costs by 12%’)."], a: ["star", "linkedin", "grammarly"] },
+    { id: "rule503020", t: "method", n: "50/30/20 budget rule", i: "🏦", u: "https://en.wikipedia.org/wiki/Personal_budget", g: ["money"], v: "savings",
+      k: "budget budgeting 50 30 20 rule save money expenses needs wants savings plan monthly",
+      x: "A common rule of thumb: about 50% needs, 30% wants, 20% savings and debt.",
+      b: { parent: "A simple family budget everyone understands.", student: "Make part-time income stretch further.", everyone: "A starting point you can adjust to your situation." },
+      h: 0, e: 1, s: ["Add up last month’s income and spending.", "Split spending into needs, wants and savings.", "Adjust one category next month — small steps."], a: ["efund", "gworkspace"] },
+    { id: "efund", t: "method", n: "Emergency fund", i: "🛟", u: "https://en.wikipedia.org/wiki/Emergency_fund", g: ["money"], v: "savings",
+      k: "emergency fund savings safety net rainy day money",
+      x: "A cash buffer for surprises — often described as a few months of essential costs.",
+      b: { everyone: "Fewer loans and less stress when life happens." },
+      h: 0, e: 1, s: ["Work out one month of essential costs.", "Automate a small transfer on payday.", "Keep it separate from everyday spending."], a: ["rule503020"] },
+    { id: "rule24", t: "method", n: "24-hour rule for purchases", i: "⏳", u: "https://en.wikipedia.org/wiki/Impulse_purchase", g: ["money"], v: "savings",
+      k: "impulse buying 24 hour rule spending save money shopping",
+      x: "Wait 24 hours before any non-essential purchase — most impulses fade.",
+      b: { everyone: "Cuts impulse spending with almost no effort." },
+      h: 0, e: 1, s: ["Add items to a wishlist instead of the cart.", "Revisit after 24 hours (30 days for big items).", "Buy only if you still want it and it fits the budget."], a: ["camel", "rule503020"] },
+    { id: "twofa", t: "method", n: "Two-step verification (2FA)", i: "🔑", u: "https://en.wikipedia.org/wiki/Multi-factor_authentication", g: ["security"], v: "safety",
+      k: "2fa two factor step authentication otp authenticator app account security hacked",
+      x: "A second code at login stops most account takeovers.",
+      b: { everyone: "Protects email, bank and social accounts even if a password leaks.", business: "Protects your shop and ad accounts." },
+      h: 0, e: 1, s: ["Install an authenticator app.", "Turn on 2FA for email first, then banking and social.", "Keep backup codes somewhere safe and offline."], a: ["bitwarden", "scamcheck"] },
+    { id: "scamcheck", t: "method", n: "Scam red-flag checklist", i: "🚩", u: "https://en.wikipedia.org/wiki/Phishing", g: ["security", "money"], v: "safety",
+      k: "scam scams fraud phishing otp fake call message lottery gift card protect",
+      x: "Urgency, secrecy, gift cards, OTP requests or too-good offers = stop and verify.",
+      b: { parent: "Teach the family 5 red flags — it protects older relatives too.", everyone: "Never share an OTP; call back on the official number." },
+      h: 0, e: 1, s: ["Pause: real organisations don’t rush you.", "Never share OTPs or passwords — with anyone.", "Verify using the official app or number, not the link you were sent."], a: ["twofa", "hibp"] },
+    { id: "boxbreath", t: "method", n: "Box breathing", i: "🌬️", u: "https://en.wikipedia.org/wiki/Breathing", g: ["health"],
+      k: "box breathing exam exams interview nerves stress anxiety calm relax breathe panic sleep",
+      x: "Breathe in 4, hold 4, out 4, hold 4 — a 2-minute reset for stress.",
+      b: { student: "Calm nerves before exams.", jobseeker: "Steady yourself before interviews.", professional: "Reset between meetings." },
+      h: 0, e: 1, s: ["Sit upright and breathe in for 4 counts.", "Hold 4, breathe out 4, hold 4.", "Repeat 4–6 rounds."], a: ["insight"] },
+    { id: "sevenmin", t: "method", n: "7-minute workout", i: "💪", u: "https://en.wikipedia.org/wiki/High-intensity_interval_training", g: ["health"],
+      k: "7 minute workout hiit exercise home no equipment fitness quick",
+      x: "12 body-weight exercises, 30 seconds each — no gym and no equipment.",
+      b: { parent: "Fits in before the kids wake up.", professional: "A real workout in a lunch break." },
+      h: 0, e: 1, s: ["Do 30 seconds each: jumping jacks, wall sit, push-ups, crunches and more.", "Rest 10 seconds between moves.", "Do it 3 times a week; repeat the circuit when it gets easy."], a: ["ntc"] },
+    { id: "habitstack", t: "method", n: "Habit stacking", i: "🔗", u: "https://en.wikipedia.org/wiki/Habit", g: ["health", "productivity", "learn"],
+      k: "habit stacking habits habit routine consistency small daily",
+      x: "Attach a tiny new habit to one you already have: ‘After coffee, I read 2 pages.’",
+      b: { everyone: "Builds habits without relying on motivation.", student: "Daily study becomes automatic." },
+      h: 1, e: 1, s: ["Pick a tiny habit that takes 2 minutes.", "Anchor it: ‘After I [current habit], I will [new habit]’.", "Tick a calendar every day you do it."], a: ["pomodoro", "duolingo"] },
+    { id: "repurpose", t: "method", n: "Content repurposing (1 → 5)", i: "♻️", u: "https://en.wikipedia.org/wiki/Content_marketing", g: ["marketing", "video", "write"],
+      k: "repurpose repurposing content creator posts reels shorts blog newsletter consistency",
+      x: "Turn one piece of content into five posts across platforms.",
+      b: { creator: "Post everywhere without making 5× the content.", business: "One product video → Reel, Short, post, story and email." },
+      h: 3, e: 1, s: ["Make one ‘pillar’ piece (a video or article).", "Cut 3 short clips, 1 carousel and 1 email from it.", "Schedule them across the week."], a: ["capcut", "canva"] },
+    { id: "buildpublic", t: "method", n: "Learn in public", i: "📣", u: "https://en.wikipedia.org/wiki/Personal_branding", g: ["job", "marketing", "learn"], v: "skill",
+      k: "learn in public personal brand branding share progress portfolio network visibility",
+      x: "Share what you’re learning every week — it becomes your portfolio and your network.",
+      b: { jobseeker: "Recruiters see proof of skills, not just claims.", developer: "Open-source work and posts attract opportunities.", freelancer: "Clients come to you after seeing your work." },
+      h: 0, e: 1, s: ["Pick one platform (LinkedIn, X, GitHub or a blog).", "Post one lesson or mini-project a week.", "Help others in the comments."], a: ["linkedin", "github"] },
+    { id: "offlinefirst", t: "method", n: "Offline-ready kit", i: "📴", u: "https://en.wikipedia.org/wiki/Offline", g: ["travel", "productivity", "learn"],
+      k: "offline no internet download maps documents travel poor signal data saving",
+      x: "Before you lose signal: download maps, documents, playlists, lessons and a Wikipedia copy.",
+      b: { everyone: "Stay productive on flights, commutes and during outages.", student: "Keep studying even without data." },
+      h: 1, e: 1, s: ["Download offline maps and translation packs.", "Turn on offline mode in Google Drive or Notion.", "Save lessons, videos and a Kiwix library."], a: ["kiwix", "gmaps", "gtranslate"] }
+  ];
+
+  /* Natural-language → goal mapping */
+  var SYN = {};
+  (function (pairs) {
+    for (var g in pairs) { pairs[g].split(" ").forEach(function (w) { (SYN[w] = SYN[w] || []).push(g); }); }
+  })({
+    earn: "earn earning earnings income money cash side hustle freelance freelancing freelancer gig gigs sell selling passive monetize monetise wfh remote extra rich",
+    job: "job jobs career careers resume cv interview interviews hire hiring promotion internship salary wfh remote employed unemployed",
+    learn: "learn learning skill skills course courses certificate certification class classes tutorial tutorials upskill school college university kids children",
+    study: "study studying exam exams homework revise revision memorize memorise notes school college university grades test tests",
+    language: "language languages english spanish french german hindi arabic japanese chinese speak speaking translate translation ielts toefl abroad",
+    code: "code coding program programming programmer developer app apps software python javascript web website build sql",
+    ai: "ai automate automation chatbot chatbots prompt prompts artificial intelligence assistant",
+    write: "write writing essay essays blog grammar email emails copy copywriting content",
+    design: "design designs logo poster posters graphic graphics thumbnail thumbnails presentation presentations slides photo photos visual",
+    video: "video videos youtube reels shorts edit editing podcast voice content creator vlog tiktok",
+    business: "business shop store customers customer brand startup local small ecommerce products orders sell selling grow found website",
+    marketing: "marketing seo followers audience social ads promote promotion grow found visible brand influencer customers reach",
+    productivity: "organize organise organized organised productive productivity focus procrastination procrastinating tasks todo time plan planner habits habit overwhelmed busy notes",
+    money: "save saving savings budget budgeting expenses debt bills cheap cheaper deals discount spend spending money finance finances",
+    health: "health healthy fitness fit workout exercise diet weight habits habit family wellbeing",
+    travel: "travel trip trips flight flights hotel hotels abroad holiday vacation tourist cheap",
+    research: "research facts sources source papers thesis news citations answers",
+    security: "safe safety secure security password passwords privacy hacked hack scam scams fraud vpn protect accounts",
+    communicate: "meeting meetings call calls team collaborate chat remote",
+    data: "data excel spreadsheet spreadsheets analytics analysis sql dashboard numbers"
+  });
+
+  var STOP = new Set("i im i'm me my mine we our you your a an the to of in on at for from by with and or but if so as is are be been was were am do does did can could should would will want wanna need needs help get got make making more most less better best some any how what which who where when why way ways new free start starting begin tips tool tools app apps site sites website websites online use using without no not very really just also it its this that these those than then there their them they less stay alternative alternatives like similar thing things something good great quickly fast faster".split(" "));
+  // "free", "online", "apps" are handled separately or too generic to rank on.
+
+  /* ===================== Helpers ===================== */
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  var store = {
+    key: function (k) { return "worthit:v1:" + k; },
+    get: function (k, d) { try { var v = localStorage.getItem(this.key(k)); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(this.key(k), JSON.stringify(v)); } catch (e) { /* storage unavailable: app still works */ } }
+  };
+  function lev1(a, b) { // true if one typo apart (insert, delete, replace or swap two letters)
+    if (a === b) return true;
+    var la = a.length, lb = b.length;
+    if (Math.abs(la - lb) > 1) return false;
+    var i = 0, j = 0, edits = 0;
+    while (i < la && j < lb) {
+      if (a[i] === b[j]) { i++; j++; continue; }
+      if (++edits > 1) return false;
+      if (la === lb && a[i] === b[j + 1] && a[i + 1] === b[j]) { i += 2; j += 2; continue; }
+      if (la > lb) i++; else if (lb > la) j++; else { i++; j++; }
+    }
+    return edits + (la - i) + (lb - j) <= 1;
+  }
+
+  /* Index the knowledge base */
+  var BY_ID = {};
+  KB.forEach(function (it) {
+    it.t = it.t || "tool";
+    if (it.t === "method") { it.f = 1; it.p = 0; it.m = 1; it.o = 2; }
+    it.b = it.b || {};
+    it.a = (it.a || []);
+    if (!it.v) {
+      var g0 = it.g[0];
+      it.v = it.h > 0 ? "time" : g0 === "health" ? "health" : g0 === "security" ? "safety" : g0 === "money" ? "savings" : g0 === "earn" ? "income" : "skill";
+    }
+    it._name = it.n.toLowerCase();
+    // Only the main name counts as a "brand" match — not words in brackets like "(Mail, VPN, Pass)".
+    it._main = it._name.split(" (")[0];
+    it._nameWords = new Set(it._main.split(/[^\p{L}\p{N}]+/u).filter(Boolean));
+    it._kw = new Set(it.k.split(" ").concat(Array.from(it._nameWords)));
+    it._kwArr = Array.from(it._kw);
+    it._desc = it.x.toLowerCase();
+    BY_ID[it.id] = it;
+  });
+  KB.forEach(function (it) { it.a = it.a.filter(function (id) { return BY_ID[id] && id !== it.id; }); });
+  var TOP_RANK = {}; TOP_SITES.forEach(function (r) { if (r[2]) TOP_RANK[r[2]] = r[0]; });
+
+  /* ===================== State ===================== */
+  function guessCurrency() {
+    var l = (navigator.language || "en-US").toLowerCase();
+    var map = [["-in", "INR"], ["hi", "INR"], ["-gb", "GBP"], ["-ca", "CAD"], ["-au", "AUD"], ["-sg", "SGD"], ["-ae", "AED"], ["ja", "JPY"], ["pt-br", "BRL"], ["-ng", "NGN"], ["-ph", "PHP"], ["fil", "PHP"],
+      ["de", "EUR"], ["fr", "EUR"], ["es-es", "EUR"], ["it", "EUR"], ["nl", "EUR"], ["pt-pt", "EUR"], ["fi", "EUR"], ["el", "EUR"], ["-ie", "EUR"]];
+    for (var i = 0; i < map.length; i++) {
+      var k = map[i][0];
+      if (k[0] === "-" ? l.indexOf(k) > 0 : l.indexOf(k) === 0) return map[i][1];
+    }
+    return "USD";
+  }
+  var defCur = guessCurrency();
+  var state = {
+    query: "",
+    type: "all",
+    sort: "score",
+    showAll: false,
+    profile: Object.assign({ persona: "everyone", budget: "any", device: "both", offline: false, currency: defCur, hourly: CURRENCIES[defCur].hour }, store.get("profile", {})),
+    plan: store.get("plan", []).filter(function (id) { return BY_ID[id]; }),
+    steps: store.get("steps", {}),
+    compare: [],
+    recent: store.get("recent", []),
+    pro: !!store.get("pro", false),
+    lastResults: []
+  };
+  if (!CURRENCIES[state.profile.currency]) state.profile.currency = "USD";
+  if (!PERSONAS[state.profile.persona]) state.profile.persona = "everyone";
+
+  function cur() { return CURRENCIES[state.profile.currency]; }
+  function hourlyUSD() { var h = Number(state.profile.hourly); return h > 0 ? h / cur().r : 0; }
+  var fmtCache = {};
+  function fmtMoney(usd) {
+    var code = state.profile.currency, v = usd * cur().r;
+    if (!fmtCache[code]) {
+      try { fmtCache[code] = new Intl.NumberFormat(undefined, { style: "currency", currency: code, minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+      catch (e) { fmtCache[code] = { format: function (n) { return code + " " + Math.round(n); } }; }
+    }
+    if (v > 0 && v < 1) return "<" + fmtCache[code].format(1);
+    return fmtCache[code].format(Math.round(v));
+  }
+  function compact(n) {
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+    if (n >= 1e4) return Math.round(n / 1e3) + "K";
+    return String(n);
+  }
+  function fmtMoneyCompact(usd) {
+    var v = usd * cur().r;
+    if (v < 10000) return fmtMoney(usd);
+    var sym = fmtMoney(0).replace(/[\d\s.,]/g, "") || state.profile.currency + " ";
+    return sym + compact(Math.round(v));
+  }
+  function currencySymbol() { return fmtMoney(0).replace(/[\d\s.,<]/g, "") || state.profile.currency; }
+
+  /* ===================== Matching & scoring ===================== */
+  function tokenize(q) {
+    var raw = String(q || "").toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+    var out = [];
+    raw.forEach(function (t) {
+      if (STOP.has(t) || t.length < 2 && !/\d/.test(t)) return;
+      if (!SYN[t] && t.length > 4 && t.slice(-1) === "s" && SYN[t.slice(0, -1)]) t = t.slice(0, -1);
+      if (out.indexOf(t) < 0) out.push(t);
+    });
+    return out;
+  }
+  function synFor(tok, q) {
+    // "make money online" means earning; "save money" means saving.
+    if (tok === "money") return /(earn|make|making|extra|side|income|online|from home)/.test(q) && !/(save|saving|budget|spend)/.test(q) ? ["earn"] : ["money"];
+    return SYN[tok];
+  }
+  function tokPts(it, tok, q) {
+    var pts = 0, lit = false, goalPts = 0;
+    if (it._nameWords.has(tok)) { pts = it.t === "method" ? 3 : SYN[tok] ? 5 : 8; lit = true; } // brand names win, generic words don't
+    else if (tok.length >= 4 && it._main.indexOf(tok) >= 0) { pts = it.t === "method" ? 2 : 4; lit = true; }
+    if (it._kw.has(tok)) { pts = Math.max(pts, 3); lit = true; }
+    else if (tok.length >= 4 && it._kwArr.some(function (w) { return w.indexOf(tok) === 0 || (w.length >= 5 && tok.indexOf(w) === 0); })) pts = Math.max(pts, tok.length >= 5 ? 2.5 : 2);
+    var gs = synFor(tok, q);
+    if (gs) gs.forEach(function (g) { var idx = it.g.indexOf(g); if (idx >= 0) goalPts = Math.max(goalPts, idx === 0 ? 4 : 3); });
+    pts = Math.max(pts, goalPts) + (lit && goalPts ? 1 : 0); // literal keyword + matching goal beats either alone
+    if (!pts && tok.length >= 4 && it._desc.indexOf(tok) >= 0) pts = 1;
+    if (!pts && tok.length >= 5 && it.t !== "method" && Array.from(it._nameWords).some(function (w) { return w.length >= 5 && lev1(tok, w); })) pts = 6; // typo in a brand name
+    if (!pts && tok.length >= 5 && it._kwArr.some(function (w) { return w.length >= 4 && lev1(tok, w); })) pts = tok.length >= 6 ? 2.5 : 2;
+    return pts;
+  }
+  function matchRaw(it, tokens, qGoals, q, weights) {
+    var raw = 0, hitGoals = 0;
+    tokens.forEach(function (tok) { raw += tokPts(it, tok, q) * (weights[tok] || 1); });
+    qGoals.forEach(function (g) { if (it.g.indexOf(g) >= 0) hitGoals++; });
+    if (hitGoals > 1) raw += (hitGoals - 1) * 1.5;
+    return raw;
+  }
+  function personaAffinity(it) {
+    var pg = PERSONAS[state.profile.persona].goals, s = 0;
+    it.g.forEach(function (g, gi) { var i = pg.indexOf(g); if (i >= 0) s += (1 - i * 0.12) * (gi === 0 ? 1 : 0.6); });
+    if (it.b[state.profile.persona]) s += 0.4;
+    return clamp(s / 1.6, 0, 1);
+  }
+  function scoreItem(it, R) {
+    var pr = state.profile, pg = PERSONAS[pr.persona].goals;
+    var P = it.b[pr.persona] ? 1 : pr.persona === "everyone" ? (it.b.everyone ? 1 : 0.6) : (it.g.some(function (g) { return pg.indexOf(g) >= 0; }) ? 0.55 : 0.25);
+    var A = it.f ? 1 : it.p <= 10 ? 0.7 : it.p <= 30 ? 0.5 : 0.3;
+    var E = it.e === 1 ? 1 : it.e === 2 ? 0.7 : 0.45;
+    var hU = hourlyUSD(), ROI;
+    if (it.h > 0 && hU > 0) { var net = it.h * 4.33 * hU - (it.f ? 0 : it.p); ROI = net <= 0 ? 0 : net / (net + 60); }
+    else ROI = KIND_BASE[it.v] || 0.4;
+    var s = 0.55 * R + 0.12 * P + 0.12 * A + 0.08 * E + 0.13 * ROI;
+    if (pr.offline) s *= it.o === 2 ? 1 : it.o === 1 ? 0.85 : 0.55;
+    if (pr.budget === "low" && !it.f && it.p > 10) s *= 0.7;
+    if (pr.device === "phone" && !it.m) s *= 0.75;
+    return clamp(Math.round(s * 100), 1, 99);
+  }
+  function computeResults() {
+    var q = state.query.toLowerCase();
+    var tokens = tokenize(q);
+    var qGoals = new Set();
+    tokens.forEach(function (t) { (synFor(t, q) || []).forEach(function (g) { qGoals.add(g); }); });
+    var wantsOffline = /offline|no internet|without internet|no data|no signal/.test(q);
+    var wantsFree = /\bfree\b/.test(q);
+    var hasQuery = tokens.length > 0 || wantsOffline;
+    var hidden = 0, list = [], raws = {}, plain = {};
+    if (hasQuery) {
+      // Specific words ("coding") count more than generic ones ("learn") that match half the guide.
+      var weights = {};
+      tokens.forEach(function (tok) {
+        var df = KB.filter(function (it) { return tokPts(it, tok, q) > 0; }).length;
+        weights[tok] = df > 15 ? 0.6 : df > 8 ? 0.85 : 1.15;
+      });
+      KB.forEach(function (it) {
+        var extra = (wantsOffline ? (it.o === 2 ? 4 : it.o === 1 ? 1.5 : 0) : 0) + (wantsFree && it.f && !it.p ? 1 : 0);
+        raws[it.id] = matchRaw(it, tokens, qGoals, q, weights) + extra;   // ranking: specific words weigh more
+        plain[it.id] = matchRaw(it, tokens, qGoals, q, {}) + extra;      // inclusion: any real match counts
+      });
+      // Searching a brand name ("canva") also surfaces its alternatives.
+      KB.forEach(function (it) {
+        if (raws[it.id] >= 8 && tokens.length <= 2) it.a.forEach(function (a) { raws[a] = Math.max(raws[a], 4); plain[a] = Math.max(plain[a], 4); });
+      });
+    }
+    KB.forEach(function (it) {
+      if (state.type !== "all" && it.t !== state.type) return;
+      var R;
+      if (hasQuery) {
+        if (plain[it.id] < 2.5) return;
+        R = 1 - Math.exp(-raws[it.id] / 6);
+      } else R = personaAffinity(it);
+      if (state.profile.budget === "free" && !it.f) { hidden++; return; }
+      list.push({ it: it, s: scoreItem(it, R) });
+    });
+    var by = {
+      score: function (a, b) { return b.s - a.s; },
+      free: function (a, b) { return ((b.it.f && !b.it.p) - (a.it.f && !a.it.p)) || (b.it.f - a.it.f) || (b.s - a.s); },
+      easy: function (a, b) { return (a.it.e - b.it.e) || (b.s - a.s); },
+      time: function (a, b) { return (b.it.h - a.it.h) || (b.s - a.s); }
+    }[state.sort] || function (a, b) { return b.s - a.s; };
+    list.sort(by);
+    return { list: list, hidden: hidden, hasQuery: hasQuery, tokens: tokens };
+  }
+
+  /* ===================== Text builders ===================== */
+  function costText(it) {
+    if (it.t === "method") return "Free · no sign-up";
+    if (it.f && !it.p) return "Free";
+    if (it.f) return "Free plan · paid from " + fmtMoney(it.p) + "/mo";
+    return "From " + fmtMoney(it.p) + "/mo";
+  }
+  function valueText(it) {
+    var hU = hourlyUSD();
+    if (it.h > 0) return "~" + it.h + " h/week" + (hU > 0 ? " ≈ " + fmtMoneyCompact(it.h * 4.33 * hU) + "/mo" : "");
+    return KIND_LABEL[it.v];
+  }
+  function worksText(it) {
+    return (it.m ? "Phone ✓" : "Best on computer") + " · " + (it.o === 2 ? "Offline ✓" : it.o === 1 ? "Partly offline" : "Needs internet");
+  }
+  function minsText(m) { return m < 1 ? "under a minute" : m < 90 ? Math.round(m) + " min" : (m / 60).toFixed(1).replace(/\.0$/, "") + " h"; }
+  function breakevenText(it) {
+    if (it.t === "method") return "Free method — it only costs a few minutes to start.";
+    if (it.v === "income") return it.p ? (it.f ? "Free to start. " : "") + "The paid plan covers itself once it brings in more than " + fmtMoney(it.p) + "/mo extra." : "Free to join — fees apply only as you sell or earn.";
+    if (it.f && !it.p) return "Completely free — every benefit is pure gain.";
+    var hU = hourlyUSD();
+    if (!(hU > 0) || !(it.h > 0)) return it.f ? "Free plan available; upgrade only if you outgrow it." : "Try the free trial first, if offered.";
+    var mins = it.p / (hU * 4.33) * 60;
+    return (it.f ? "Free plan available. The paid plan" : "It") + " pays for itself if it saves you " + minsText(mins) + " a week.";
+  }
+  function whyFor(it) {
+    var mine = it.b[state.profile.persona];
+    return { mine: !!mine, text: mine || it.b.everyone || it.x };
+  }
+  function tagsHtml(it) {
+    var t = '<span class="tag">' + (it.t === "method" ? "Free method" : "Tool") + "</span>";
+    t += '<span class="tag">' + esc(GOALS[it.g[0]].label) + "</span>";
+    if (it.t !== "method") t += it.f && !it.p ? '<span class="tag good">Free</span>' : it.f ? '<span class="tag good">Free plan</span>' : "";
+    if (FAST.indexOf(it.id) >= 0) t += '<span class="tag hot">Fast-growing 2026</span>';
+    else if (TOP_RANK[it.id]) t += '<span class="tag hot">#' + TOP_RANK[it.id] + " most visited</span>";
+    else if (it.o === 2 && it.t !== "method") t += '<span class="tag">Works offline</span>';
+    return t;
+  }
+
+  /* ===================== Rendering ===================== */
+  var els = {
+    results: $("#results"), meta: $("#resultsMeta"), title: $("#resultsTitle"), moreRow: $("#moreRow"), moreBtn: $("#moreBtn"),
+    q: $("#q"), recent: $("#recent"), planBody: $("#planBody"), planCount: $("#planCount"),
+    tray: $("#tray"), trayItems: $("#trayItems"), modal: $("#modal"), modalCard: $("#modalCard"), modalTitle: $("#modalTitle"), modalBody: $("#modalBody"),
+    toast: $("#toast"), tip: $("#tip")
+  };
+  var PAGE = 12;
+
+  function itemCard(r) {
+    var it = r.it, inPlan = state.plan.indexOf(it.id) >= 0, inCmp = state.compare.indexOf(it.id) >= 0, w = whyFor(it);
+    return '<article class="card item" data-id="' + it.id + '">' +
+      '<div class="item-top"><span class="ico" aria-hidden="true">' + it.i + '</span>' +
+      '<div class="item-title"><h3>' + esc(it.n) + '</h3><div class="tags">' + tagsHtml(it) + "</div></div>" +
+      '<div class="score" title="Worth-it score for your profile (0–100)"><b>' + r.s + '</b><span>worth-it</span></div></div>' +
+      '<div class="meter" role="img" aria-label="Worth-it score ' + r.s + ' out of 100"><i style="width:' + r.s + '%"></i></div>' +
+      '<p class="why"><strong>' + (w.mine ? "For you" : "Why it helps") + ":</strong> " + esc(w.text) + "</p>" +
+      '<dl class="facts"><div><dt>Cost</dt><dd>' + esc(costText(it)) + "</dd></div>" +
+      "<div><dt>Value</dt><dd>" + esc(valueText(it)) + "</dd></div>" +
+      "<div><dt>Ease</dt><dd>" + EASE[it.e] + "</dd></div>" +
+      "<div><dt>Works</dt><dd>" + esc(worksText(it)) + "</dd></div></dl>" +
+      '<p class="breakeven">' + esc(breakevenText(it)) + "</p>" +
+      (it.note ? '<p class="note">ⓘ ' + esc(it.note) + "</p>" : "") +
+      '<div class="item-actions">' +
+      '<button type="button" class="btn ' + (inPlan ? "ok" : "primary") + ' sm" data-act="add" aria-pressed="' + inPlan + '">' + (inPlan ? "✓ In plan" : "+ Add to plan") + "</button>" +
+      '<button type="button" class="btn ghost sm" data-act="cmp" aria-pressed="' + inCmp + '">' + (inCmp ? "✓ Compare" : "Compare") + "</button>" +
+      '<button type="button" class="btn ghost sm" data-act="info">Details</button>' +
+      '<a class="btn ghost sm go" href="' + esc(it.u) + '" target="_blank" rel="noopener noreferrer" title="Open ' + esc(it.n) + ' website" aria-label="Open ' + esc(it.n) + ' website (new tab)">↗</a>' +
+      "</div></article>";
+  }
+
+  function renderResults() {
+    var res = computeResults();
+    state.lastResults = res.list;
+    var list = res.list, shown = (state.showAll || res.hasQuery) ? list : list.slice(0, PAGE);
+    var pLabel = PERSONAS[state.profile.persona].label.toLowerCase();
+    if (res.hasQuery) {
+      els.title.textContent = list.length ? "Best matches for “" + state.query.trim() + "”" : "No direct match for “" + state.query.trim() + "”";
+    } else {
+      els.title.textContent = state.profile.persona === "everyone" ? "Top picks for you" : "Top picks for a " + pLabel;
+    }
+    var meta = list.length + (list.length === 1 ? " match" : " matches") + " · ranked by " + $("#sort").selectedOptions[0].textContent.toLowerCase();
+    if (res.hidden) meta += " · " + res.hidden + " paid-only hidden by your budget";
+    els.meta.textContent = meta;
+
+    if (!list.length) {
+      var safeQ = esc(state.query.trim());
+      els.results.innerHTML = '<div class="card empty-state" style="grid-column:1/-1"><h3>Nothing in the guide matches that yet</h3>' +
+        '<p class="muted">Try simpler words (e.g. “earn”, “study”, “design”), pick a goal above, or get a plain-English explanation of the idea.</p>' +
+        '<div class="modal-actions" style="justify-content:center"><button type="button" class="btn primary" id="explainQueryBtn">Explain “' + safeQ + '”</button>' +
+        '<button type="button" class="btn ghost" id="resetBtn">Show top picks</button></div></div>';
+      $("#explainQueryBtn").addEventListener("click", function () { $("#explainQ").value = state.query.trim(); runExplain(state.query.trim()); scrollToEl($("#explainTitle")); });
+      $("#resetBtn").addEventListener("click", function () { setQuery(""); });
+    } else {
+      els.results.innerHTML = shown.map(itemCard).join("");
+    }
+    var hasMore = !res.hasQuery && !state.showAll && list.length > PAGE;
+    els.moreRow.hidden = !hasMore;
+    if (hasMore) els.moreBtn.textContent = "Show all " + list.length;
+    renderKPIs(list.length, res.hasQuery);
+  }
+
+  function planItems() { return state.plan.map(function (id) { return BY_ID[id]; }).filter(Boolean); }
+  function stepsDone(it) { var n = 0; it.s.forEach(function (_, i) { if (state.steps[it.id + ":" + i]) n++; }); return n; }
+
+  function renderKPIs(matchCount, hasQuery) {
+    $("#kMatches").textContent = matchCount;
+    $("#kMatchesHint").textContent = hasQuery ? "for your search" : "of " + KB.length + " tools & methods";
+    var items = planItems(), hU = hourlyUSD();
+    var hours = items.reduce(function (s, it) { return s + it.h; }, 0);
+    var minCost = items.reduce(function (s, it) { return s + (it.f ? 0 : it.p); }, 0);
+    var maxCost = items.reduce(function (s, it) { return s + it.p; }, 0);
+    var value = hours * 4.33 * hU;
+    $("#kHours").textContent = hours + " h";
+    $("#kHoursHint").textContent = items.length ? "from " + items.length + (items.length === 1 ? " pick" : " picks") + " in your plan" : "Add picks to your plan";
+    $("#kValue").textContent = hU > 0 ? fmtMoneyCompact(value) : "–";
+    $("#kValueHint").textContent = hU > 0 ? (items.length ? "net ≈ " + fmtMoneyCompact(Math.max(0, value - minCost)) + " after costs" : "at " + fmtMoney(hU) + " per hour") : "Set your hourly value";
+    $("#kCost").textContent = minCost ? fmtMoney(minCost) : "Free";
+    $("#kCostHint").textContent = maxCost > minCost ? "Free plans · " + fmtMoney(maxCost) + " if you upgrade all" : items.length ? "Everything here is free" : "Using free plans";
+  }
+
+  function renderPlan() {
+    var items = planItems(), hU = hourlyUSD();
+    els.planCount.textContent = items.length;
+    if (!items.length) {
+      els.planBody.innerHTML = '<p class="empty">Your plan is empty. Tap <strong>+ Add to plan</strong> on any pick — we’ll total the time and money it’s worth to you and build a 7-day action plan.</p>';
+      return;
+    }
+    var maxH = Math.max.apply(null, items.map(function (it) { return it.h; }).concat([1]));
+    els.planBody.innerHTML = '<ul class="plan-list">' + items.map(function (it) {
+      var d = stepsDone(it), tip = it.n + " · " + (it.h ? "~" + it.h + " h/week saved" + (hU > 0 ? " ≈ " + fmtMoney(it.h * 4.33 * hU) + "/mo" : "") : KIND_LABEL[it.v]);
+      return '<li><span class="ico sm" aria-hidden="true">' + it.i + "</span>" +
+        '<div class="pl-main"><div class="pl-row"><button type="button" class="link" data-info="' + it.id + '">' + esc(it.n) + "</button>" +
+        '<span class="muted small">' + d + "/" + it.s.length + " steps</span></div>" +
+        '<div class="bar-row"><span class="bar" tabindex="0" data-tip="' + esc(tip) + '" aria-label="' + esc(tip) + '"><i style="width:' + (it.h / maxH * 100) + '%"></i></span>' +
+        '<span class="bar-val">' + (it.h ? "~" + it.h + " h/wk" : esc(KIND_LABEL[it.v])) + "</span></div></div>" +
+        '<button type="button" class="x sm" data-remove="' + it.id + '" aria-label="Remove ' + esc(it.n) + ' from plan">×</button></li>';
+    }).join("") + '</ul><p class="src">Bars show estimated hours saved per week (rough guide).</p>';
+  }
+
+  function renderRecent() {
+    if (!state.recent.length) { els.recent.innerHTML = ""; return; }
+    els.recent.innerHTML = "<span>Recent:</span>" + state.recent.map(function (r) {
+      return '<button type="button" class="chip sm" data-q="' + esc(r) + '">' + esc(r) + "</button>";
+    }).join("") + '<button type="button" class="link small" id="clearRecent">clear</button>';
+  }
+
+  function renderTray() {
+    els.tray.hidden = !state.compare.length;
+    els.trayItems.innerHTML = state.compare.map(function (id) {
+      var it = BY_ID[id];
+      return '<button type="button" class="chip sm" data-uncmp="' + id + '" aria-label="Remove ' + esc(it.n) + ' from comparison">' + it.i + " " + esc(it.n) + " ×</button>";
+    }).join("");
+    $("#compareBtn").disabled = state.compare.length < 2;
+    $("#compareBtn").textContent = state.compare.length < 2 ? "Pick 1 more" : "Compare now";
+  }
+
+  function renderTrends() {
+    var rows = TOP_SITES.slice(0, 12).map(function (r) {
+      return '<li><span class="rk">#' + r[0] + "</span>" + (r[2] ? '<button type="button" class="link" data-info="' + r[2] + '">' + esc(r[1]) + "</button>" : "<span>" + esc(r[1]) + "</span>") + "</li>";
+    }).join("");
+    $("#trendBody").innerHTML =
+      '<h3 class="mini">Most visited websites · Oct 2026</h3><ol class="rank">' + rows + "</ol>" +
+      '<p class="src">Similarweb ranking via Wikipedia. AI chatbots in the global top 25: ChatGPT #5, Gemini #15, Claude #25.</p>' +
+      '<h3 class="mini">Fastest-growing AI tools</h3><div class="chips">' + FAST.map(function (id) {
+        var it = BY_ID[id]; return '<button type="button" class="chip sm" data-info="' + id + '">' + it.i + " " + esc(it.n) + "</button>";
+      }).join("") + '</div><p class="src">By real user adoption — TheAISelect, Jun 2026.</p>' +
+      '<h3 class="mini">Most in-demand skills</h3><div class="chips">' + SKILLS.map(function (s) {
+        return '<button type="button" class="chip sm" data-q="' + esc(s[1]) + '">' + esc(s[0]) + "</button>";
+      }).join("") + '</div><p class="src">LinkedIn Skills on the Rise &amp; WEF Future of Jobs, 2026.</p>';
+  }
+
+  function renderAll() { renderResults(); renderPlan(); renderTray(); }
+
+  /* ===================== Actions ===================== */
+  function setQuery(q, opts) {
+    state.query = q || "";
+    state.showAll = false;
+    els.q.value = state.query;
+    var t = state.query.trim();
+    try { history.replaceState(null, "", t ? "#q=" + encodeURIComponent(t) : location.pathname + location.search); } catch (e) { }
+    if (t && !(opts && opts.noRecent)) {
+      state.recent = [t].concat(state.recent.filter(function (r) { return r.toLowerCase() !== t.toLowerCase(); })).slice(0, 5);
+      store.set("recent", state.recent);
+      renderRecent();
+    }
+    renderResults();
+  }
+
+  function togglePlan(id) {
+    var i = state.plan.indexOf(id), it = BY_ID[id];
+    if (i >= 0) { state.plan.splice(i, 1); toast("Removed " + it.n + " from your plan"); }
+    else {
+      if (CONFIG.pro.enabled && !state.pro && state.plan.length >= CONFIG.pro.freePlanLimit) { openPro("Your free plan holds " + CONFIG.pro.freePlanLimit + " picks. Go Pro for an unlimited plan."); return; }
+      state.plan.push(id); toast("Added " + it.n + " — see ‘My benefit plan’");
+    }
+    store.set("plan", state.plan);
+    renderPlan(); renderResults();
+  }
+  function toggleCompare(id) {
+    var i = state.compare.indexOf(id);
+    if (i >= 0) state.compare.splice(i, 1);
+    else {
+      if (state.compare.length >= 3) { toast("You can compare up to 3 at a time"); return; }
+      state.compare.push(id);
+    }
+    renderTray(); renderResults();
+  }
+
+  var toastTimer;
+  function toast(msg) {
+    els.toast.textContent = msg;
+    els.toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { els.toast.classList.remove("show"); }, 2600);
+  }
+  function scrollToEl(el) { try { el.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) { el.scrollIntoView(); } }
+
+  /* ----- Modal ----- */
+  var lastFocus = null;
+  function openModal(title, html, wide) {
+    lastFocus = document.activeElement;
+    els.modalTitle.textContent = title;
+    els.modalBody.innerHTML = html;
+    els.modalCard.classList.toggle("wide", !!wide);
+    els.modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    $("#modalClose").focus();
+  }
+  function closeModal() {
+    if (els.modal.hidden) return;
+    els.modal.hidden = true;
+    document.body.style.overflow = "";
+    document.body.classList.remove("print-modal");
+    if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) { } }
+  }
+
+  function openDetails(id) {
+    var it = BY_ID[id]; if (!it) return;
+    var r = state.lastResults.filter(function (x) { return x.it.id === id; })[0];
+    var score = r ? r.s : scoreItem(it, personaAffinity(it));
+    var persons = Object.keys(it.b).map(function (k) {
+      var lbl = k === "everyone" ? "Anyone" : PERSONAS[k] ? PERSONAS[k].label : k;
+      return "<li><b>" + esc(lbl) + ":</b> " + esc(it.b[k]) + "</li>";
+    }).join("");
+    var inPlan = state.plan.indexOf(id) >= 0;
+    var html = '<div class="item-top"><span class="ico" aria-hidden="true">' + it.i + '</span><div class="item-title"><div class="tags">' + tagsHtml(it) + "</div>" +
+      '<p style="margin:8px 0 0">' + esc(it.x) + '</p></div><div class="score"><b>' + score + "</b><span>worth-it</span></div></div>" +
+      '<div class="meter" style="margin-top:12px" role="img" aria-label="Worth-it score ' + score + ' out of 100"><i style="width:' + score + '%"></i></div>' +
+      "<h3>Who benefits and how</h3><ul class=\"persona-list\">" + persons + "</ul>" +
+      '<h3>The numbers for you</h3><dl class="facts"><div><dt>Cost</dt><dd>' + esc(costText(it)) + "</dd></div><div><dt>Value</dt><dd>" + esc(valueText(it)) +
+      "</dd></div><div><dt>Ease</dt><dd>" + EASE[it.e] + "</dd></div><div><dt>Works</dt><dd>" + esc(worksText(it)) + "</dd></div></dl>" +
+      '<p class="breakeven" style="margin-top:8px">' + esc(breakevenText(it)) + "</p>" +
+      (it.note ? '<p class="note" style="margin-top:8px">ⓘ ' + esc(it.note) + "</p>" : "") +
+      "<h3>Start in 3 steps</h3><ol>" + it.s.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol>" +
+      (it.a.length ? '<h3>Alternatives</h3><div class="chips" style="justify-content:flex-start;margin:0">' + it.a.map(function (a) {
+        var x = BY_ID[a]; return '<button type="button" class="chip sm" data-info="' + a + '">' + x.i + " " + esc(x.n) + "</button>";
+      }).join("") + "</div>" : "") +
+      '<div id="detailWiki" class="explain-out"></div>' +
+      '<div class="modal-actions"><button type="button" class="btn ' + (inPlan ? "ok" : "primary") + '" id="dAdd">' + (inPlan ? "✓ In your plan" : "+ Add to plan") + "</button>" +
+      '<a class="btn ghost" href="' + esc(it.u) + '" target="_blank" rel="noopener noreferrer">Open ' + esc(it.n.split(" (")[0]) + " ↗</a>" +
+      '<button type="button" class="btn ghost" id="dWiki">Explain via Wikipedia</button>' +
+      '<button type="button" class="btn ghost" id="dShare">Share</button></div>';
+    openModal(it.n, html);
+    $("#dAdd").addEventListener("click", function () { togglePlan(id); openDetails(id); });
+    $("#dShare").addEventListener("click", function () { share(it.n + " — is it worth it for you?", it.x, baseUrl() + "#q=" + encodeURIComponent(it.n)); });
+    $("#dWiki").addEventListener("click", function () {
+      var term = it.t === "method" ? it.n : it.n.split(" (")[0];
+      explainInto($("#detailWiki"), term);
+    });
+  }
+
+  function openCompare() {
+    var items = state.compare.map(function (id) { return BY_ID[id]; });
+    if (items.length < 2) return;
+    var scoreOf = function (it) { var r = state.lastResults.filter(function (x) { return x.it.id === it.id; })[0]; return r ? r.s : scoreItem(it, personaAffinity(it)); };
+    var rows = [
+      ["Worth-it score", function (it) { return "<b>" + scoreOf(it) + "</b> / 100"; }],
+      ["Type", function (it) { return it.t === "method" ? "Free method" : "Tool"; }],
+      ["Why it helps you", function (it) { return esc(whyFor(it).text); }],
+      ["Cost", function (it) { return esc(costText(it)); }],
+      ["Value", function (it) { return esc(valueText(it)); }],
+      ["Pays for itself", function (it) { return esc(breakevenText(it)); }],
+      ["Ease", function (it) { return EASE[it.e]; }],
+      ["Works", function (it) { return esc(worksText(it)); }],
+      ["First step", function (it) { return esc(it.s[0]); }]
+    ];
+    var html = '<div class="table-wrap"><table><thead><tr><th scope="col"><span class="muted">For a ' + esc(PERSONAS[state.profile.persona].label.toLowerCase()) + "</span></th>" +
+      items.map(function (it) { return '<th scope="col">' + it.i + " " + esc(it.n) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      rows.map(function (r) { return '<tr><th scope="row">' + r[0] + "</th>" + items.map(function (it) { return "<td>" + r[1](it) + "</td>"; }).join("") + "</tr>"; }).join("") +
+      '</tbody></table></div><div class="modal-actions">' + items.map(function (it) {
+        var inPlan = state.plan.indexOf(it.id) >= 0;
+        return '<button type="button" class="btn ' + (inPlan ? "ok" : "ghost") + ' sm" data-cplan="' + it.id + '">' + (inPlan ? "✓ " : "+ ") + esc(it.n) + "</button>";
+      }).join("") + "</div>";
+    openModal("Side-by-side comparison", html, true);
+    $$("[data-cplan]", els.modalBody).forEach(function (b) { b.addEventListener("click", function () { togglePlan(b.getAttribute("data-cplan")); openCompare(); }); });
+  }
+
+  /* ----- 7-day plan ----- */
+  function buildWeek() {
+    var items = planItems().slice().sort(function (a, b) { return scoreItem(b, personaAffinity(b)) - scoreItem(a, personaAffinity(a)); });
+    var tasks = [];
+    for (var step = 0; step < 3; step++) items.forEach(function (it) { if (it.s[step]) tasks.push({ it: it, idx: step, text: it.s[step] }); });
+    var perDay = clamp(Math.ceil(tasks.length / 6), 1, 3);
+    var days = [];
+    for (var d = 0; d < 6; d++) days.push(tasks.slice(d * perDay, d * perDay + perDay));
+    return { days: days, later: tasks.slice(perDay * 6), total: tasks.length, items: items };
+  }
+  function weekText() {
+    var w = buildWeek(), out = [CONFIG.appName + " — my 7-day action plan", "Profile: " + PERSONAS[state.profile.persona].label, ""];
+    w.days.forEach(function (day, i) {
+      out.push("Day " + (i + 1) + ":");
+      if (!day.length) out.push("  • Catch up or repeat what worked.");
+      day.forEach(function (t) { out.push("  [" + (state.steps[t.it.id + ":" + t.idx] ? "x" : " ") + "] " + t.it.n + " — " + t.text); });
+    });
+    out.push("Day 7:", "  • Review: keep what saved you time or money, drop the rest.");
+    if (w.later.length) { out.push("", "Next week:"); w.later.forEach(function (t) { out.push("  • " + t.it.n + " — " + t.text); }); }
+    out.push("", "Links:"); w.items.forEach(function (it) { out.push("  " + it.n + ": " + it.u); });
+    return out.join("\n");
+  }
+  function openWeek() {
+    var items = planItems();
+    if (!items.length) { toast("Add a few picks to your plan first"); scrollToEl($("#results")); return; }
+    var w = buildWeek();
+    var done = w.days.concat([w.later]).reduce(function (s, day) { return s + day.filter(function (t) { return state.steps[t.it.id + ":" + t.idx]; }).length; }, 0);
+    var pct = w.total ? Math.round(done / w.total * 100) : 0;
+    var taskHtml = function (t) {
+      var key = t.it.id + ":" + t.idx, on = !!state.steps[key];
+      return '<label class="task' + (on ? " done" : "") + '"><input type="checkbox" data-step="' + key + '"' + (on ? " checked" : "") + "><span><b>" + esc(t.it.n) + "</b> — " + esc(t.text) + "</span></label>";
+    };
+    var html = '<p class="muted" style="margin-top:0">Small daily steps, ordered by what’s worth most to you. Ticks are saved on this device.</p>' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div class="meter" style="flex:1" role="img" aria-label="' + pct + '% complete"><i style="width:' + pct + '%"></i></div><b>' + done + " / " + w.total + " done</b></div>" +
+      '<ol class="week">' + w.days.map(function (day, i) {
+        return "<li><h4>Day " + (i + 1) + "</h4>" + (day.length ? day.map(taskHtml).join("") : '<div class="task"><span class="muted">Catch up, or repeat what worked best.</span></div>') + "</li>";
+      }).join("") + '<li><h4>Day 7</h4><div class="task"><span>Review: keep what saved you time or money, drop the rest.</span></div></li>' +
+      (w.later.length ? "<li><h4>Next week</h4>" + w.later.map(taskHtml).join("") + "</li>" : "") + "</ol>" +
+      '<div class="modal-actions"><button type="button" class="btn primary" id="wPrint">Print</button><button type="button" class="btn ghost" id="wDownload">Download .txt</button><button type="button" class="btn ghost" id="wCopy">Copy</button></div>';
+    openModal("Your 7-day action plan", html);
+    $$("[data-step]", els.modalBody).forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        var k = cb.getAttribute("data-step");
+        if (cb.checked) state.steps[k] = true; else delete state.steps[k];
+        store.set("steps", state.steps);
+        renderPlan();
+        openWeek();
+        var again = $('[data-step="' + k + '"]', els.modalBody); if (again) again.focus();
+      });
+    });
+    $("#wPrint").addEventListener("click", function () { if (proGate("Printing your plan")) { document.body.classList.add("print-modal"); window.print(); setTimeout(function () { document.body.classList.remove("print-modal"); }, 500); } });
+    $("#wDownload").addEventListener("click", function () { if (proGate("Downloading your plan")) download("worthit-7-day-plan.txt", weekText()); });
+    $("#wCopy").addEventListener("click", function () { copyText(weekText()); });
+  }
+
+  function proGate(what) {
+    if (!CONFIG.pro.enabled || state.pro) return true;
+    openPro(what + " is a Pro feature.");
+    return false;
+  }
+
+  function download(name, text) {
+    try {
+      var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      toast("Downloaded " + name);
+    } catch (e) { copyText(text); }
+  }
+  function copyText(text) {
+    var done = function () { toast("Copied to clipboard"); };
+    var fallback = function () {
+      try {
+        var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select(); var ok = document.execCommand("copy"); ta.remove();
+        toast(ok ? "Copied to clipboard" : "Couldn’t copy — select and copy manually");
+      } catch (e) { toast("Couldn’t copy — select and copy manually"); }
+    };
+    try { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback); else fallback(); } catch (e) { fallback(); }
+  }
+  function baseUrl() { return location.href.split("#")[0]; }
+  function share(title, text, url) {
+    if (navigator.share) { navigator.share({ title: title, text: text, url: url }).catch(function () { }); }
+    else copyText(url);
+  }
+
+  /* ----- Pro / pricing ----- */
+  function openPro(reason) {
+    var p = CONFIG.pro;
+    var html = (reason ? '<p style="margin-top:0"><strong>' + esc(reason) + "</strong></p>" : "") +
+      (!p.enabled ? '<div class="banner">🎉 Launch offer: every Pro feature is free right now.</div>' : state.pro ? '<div class="banner">✓ Pro is active on this device. Thank you!</div>' : "") +
+      '<div class="plans"><div class="plan-card"><h3>Free</h3><div class="price">' + esc(fmtMoney(0)) + '</div><ul>' +
+      "<li>Search all tools &amp; free methods</li><li>Personal worth-it scores</li><li>Explain any concept</li><li>Works offline</li>" +
+      (p.enabled ? "<li>Plan up to " + p.freePlanLimit + " picks</li>" : "<li>Benefit plan</li>") + "</ul></div>" +
+      '<div class="plan-card pro"><h3>Pro</h3><div class="price">' + esc(p.priceLabel) + '</div><div class="muted small">' + esc(p.yearlyLabel) + "</div><ul>" +
+      "<li>Unlimited benefit plan</li><li>7-day planner: print &amp; download</li><li>Priority new tools every month</li><li>Support an independent, ad-free guide</li></ul>" +
+      '<button type="button" class="btn primary" id="buyPro" style="width:100%;margin-top:6px">' + (p.paymentUrl ? "Get Pro" : "Support us") + "</button></div></div>" +
+      (p.enabled && !state.pro ? '<h3>Already paid?</h3><form class="explain-form" id="unlockForm"><input id="unlockCode" type="text" placeholder="Enter your unlock code" aria-label="Unlock code" autocomplete="off"><button class="btn primary sm" type="submit">Unlock</button></form>' : "");
+    openModal("WorthIt Pro", html);
+    $("#buyPro").addEventListener("click", function () {
+      if (p.paymentUrl) { window.open(p.paymentUrl, "_blank", "noopener"); }
+      else toast("Payments open soon — enjoy every feature free during launch.");
+    });
+    var uf = $("#unlockForm");
+    if (uf) uf.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var code = $("#unlockCode").value.trim();
+      if (!code) return;
+      if (!(window.crypto && crypto.subtle)) { toast("Unlocking needs a secure (https) page"); return; }
+      crypto.subtle.digest("SHA-256", new TextEncoder().encode(code)).then(function (buf) {
+        var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+        if (p.unlockHashes.indexOf(hex) >= 0) { state.pro = true; store.set("pro", true); toast("Pro unlocked — thank you!"); closeModal(); }
+        else toast("That code didn’t work — check and try again");
+      }).catch(function () { toast("Couldn’t check the code here"); });
+    });
+  }
+
+  function openAbout() {
+    openModal("About & privacy",
+      "<p style=\"margin-top:0\"><strong>" + esc(CONFIG.appName) + "</strong> answers one question: <em>which of the world’s most-used tools and methods are actually worth it for you?</em></p>" +
+      "<h3>How the worth-it score works</h3><ul><li><b>Match</b> (42%) — how well it fits your goal or profile.</li><li><b>Value</b> (18%) — time saved × your hourly value, minus cost.</li>" +
+      "<li><b>Affordability</b> (16%), <b>fit for people like you</b> (14%) and <b>ease</b> (10%).</li><li>Adjusted for ‘must work offline’, your budget and your device.</li></ul>" +
+      "<h3>Online and offline</h3><p>The whole guide is built into this page, so search, scores and plans work with no internet. Concept explanations come live from Wikipedia and are saved for offline reading.</p>" +
+      "<h3>Privacy</h3><p>No account, no cookies, no analytics. Your profile, plan and searches are stored only in this browser (local storage). Online explanations send just the concept you type to Wikipedia.</p>" +
+      "<h3>Honesty note</h3><p>Prices are approximate starting prices and change often; time figures are estimates for a typical user. Always check the official site. Nothing here is financial, legal or medical advice.</p>" +
+      '<div class="modal-actions"><button type="button" class="btn ghost" id="resetAll">Reset all my data</button></div>');
+    $("#resetAll").addEventListener("click", function () {
+      if (!confirm("Clear your profile, plan, searches and saved explanations on this device?")) return;
+      ["profile", "plan", "steps", "recent", "wiki", "pending", "pro"].forEach(function (k) { try { localStorage.removeItem(store.key(k)); } catch (e) { } });
+      location.hash = ""; location.reload();
+    });
+  }
+
+  /* ----- Wikipedia explainer (online), cached for offline ----- */
+  function wikiCache() { return store.get("wiki", {}); }
+  function wikiLookup(term) {
+    var key = term.toLowerCase().trim(), cache = wikiCache();
+    if (cache[key]) return Promise.resolve(Object.assign({ cached: true }, cache[key]));
+    if (!navigator.onLine) return Promise.reject(new Error("offline"));
+    var url = "https://" + CONFIG.wikiLang + ".wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&generator=search&gsrlimit=1&gsrsearch=" +
+      encodeURIComponent(term) + "&prop=extracts%7Cinfo&exintro=1&explaintext=1&exsentences=4&inprop=url";
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, CONFIG.wikiTimeoutMs);
+    return fetch(url, ctrl ? { signal: ctrl.signal } : {}).then(function (r) {
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.json();
+    }).then(function (j) {
+      var pages = j && j.query && j.query.pages;
+      if (!pages) return null;
+      var p = pages[Object.keys(pages)[0]];
+      var link = String(p.fullurl || "");
+      if (link.indexOf("https://" + CONFIG.wikiLang + ".wikipedia.org/") !== 0) link = "https://" + CONFIG.wikiLang + ".wikipedia.org/wiki/" + encodeURIComponent(String(p.title).replace(/ /g, "_"));
+      var res = { title: String(p.title || term), extract: String(p.extract || "").trim(), url: link, at: Date.now() };
+      var c = wikiCache(); c[key] = res;
+      var keys = Object.keys(c);
+      if (keys.length > 40) { keys.sort(function (a, b) { return (c[a].at || 0) - (c[b].at || 0); }).slice(0, keys.length - 40).forEach(function (k) { delete c[k]; }); }
+      store.set("wiki", c);
+      return res;
+    }).finally(function () { clearTimeout(timer); });
+  }
+  function explainHtml(res) {
+    if (!res) return '<p class="muted">No article found. Try different or simpler words.</p>';
+    var paras = res.extract ? res.extract.split(/\n+/).filter(Boolean).slice(0, 3).map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("") : '<p class="muted">No summary available.</p>';
+    return "<h3>" + esc(res.title) + "</h3>" + paras +
+      '<p class="src">From Wikipedia (CC BY-SA)' + (res.cached ? " · saved for offline" : "") + ' · <a href="' + esc(res.url) + '" target="_blank" rel="noopener noreferrer">Read more ↗</a></p>' +
+      '<div class="modal-actions" style="margin-top:6px"><button type="button" class="btn ghost sm" data-q="' + esc(res.title) + '">Find tools for “' + esc(res.title) + '”</button></div>';
+  }
+  function explainInto(target, term) {
+    term = String(term || "").trim().slice(0, 120);
+    if (!term) return;
+    target.innerHTML = '<p class="muted">Looking up “' + esc(term) + "”…</p>";
+    wikiLookup(term).then(function (res) { target.innerHTML = explainHtml(res); renderSaved(); })
+      .catch(function (err) {
+        if (!navigator.onLine || (err && err.message === "offline")) {
+          queuePending(term);
+          target.innerHTML = '<p class="muted">You’re offline. “' + esc(term) + "” is saved — we’ll explain it automatically when you’re back online.</p>";
+        } else {
+          target.innerHTML = '<p class="muted">Couldn’t reach Wikipedia right now. Please try again in a moment.</p>';
+        }
+      });
+  }
+  function runExplain(term) { explainInto($("#explainOut"), term); }
+  function queuePending(term) {
+    var p = store.get("pending", []);
+    if (p.indexOf(term) < 0) p.push(term);
+    store.set("pending", p.slice(-10));
+  }
+  function processPending() {
+    var p = store.get("pending", []);
+    if (!p.length || !navigator.onLine) return;
+    store.set("pending", []);
+    p.reduce(function (chain, term) {
+      return chain.then(function () {
+        return wikiLookup(term).then(function (res) {
+          $("#explainOut").innerHTML = explainHtml(res);
+          toast("Back online — explained “" + term + "”");
+          renderSaved();
+        }).catch(function () { queuePending(term); });
+      });
+    }, Promise.resolve());
+  }
+  function renderSaved() {
+    var c = wikiCache(), keys = Object.keys(c).sort(function (a, b) { return (c[b].at || 0) - (c[a].at || 0); }).slice(0, 6);
+    $("#savedExplains").innerHTML = keys.length ? '<span class="muted small" style="width:100%">Saved for offline:</span>' + keys.map(function (k) {
+      return '<button type="button" class="chip sm" data-saved="' + esc(k) + '">' + esc(c[k].title) + "</button>";
+    }).join("") : "";
+  }
+
+  /* ----- Connectivity ----- */
+  function updateNet() {
+    var on = navigator.onLine;
+    $("#net").classList.toggle("off", !on);
+    $("#netLabel").textContent = on ? "Online" : "Offline · still works";
+  }
+
+  /* ----- Tooltip for plan bars ----- */
+  function showTip(el, x, y) {
+    els.tip.textContent = el.getAttribute("data-tip");
+    els.tip.hidden = false;
+    var w = els.tip.offsetWidth, h = els.tip.offsetHeight;
+    var left = clamp(x - w / 2, 8, window.innerWidth - w - 8), top = y - h - 12;
+    if (top < 8) top = y + 16;
+    els.tip.style.left = left + "px"; els.tip.style.top = top + "px";
+  }
+  function hideTip() { els.tip.hidden = true; }
+
+  /* ===================== Profile controls ===================== */
+  function initProfile() {
+    var ps = $("#pPersona");
+    ps.innerHTML = Object.keys(PERSONAS).map(function (k) { return '<option value="' + k + '">' + esc(PERSONAS[k].label) + "</option>"; }).join("");
+    var cs = $("#pCurrency");
+    cs.innerHTML = Object.keys(CURRENCIES).map(function (k) { return '<option value="' + k + '">' + k + " · " + esc(CURRENCIES[k].label) + "</option>"; }).join("");
+    var pr = state.profile;
+    ps.value = pr.persona; $("#pBudget").value = pr.budget; $("#pDevice").value = pr.device; cs.value = pr.currency;
+    $("#pHourly").value = pr.hourly; $("#pOffline").checked = !!pr.offline;
+    $("#curSym").textContent = currencySymbol();
+    var save = function () { store.set("profile", state.profile); renderAll(); };
+    ps.addEventListener("change", function () { pr.persona = ps.value; save(); });
+    $("#pBudget").addEventListener("change", function (e) { pr.budget = e.target.value; save(); });
+    $("#pDevice").addEventListener("change", function (e) { pr.device = e.target.value; save(); });
+    $("#pOffline").addEventListener("change", function (e) { pr.offline = e.target.checked; save(); });
+    var hTimer;
+    $("#pHourly").addEventListener("input", function (e) {
+      var v = Number(e.target.value);
+      pr.hourly = isFinite(v) && v >= 0 ? v : 0;
+      clearTimeout(hTimer); hTimer = setTimeout(save, 250);
+    });
+    cs.addEventListener("change", function () {
+      var old = CURRENCIES[pr.currency], nw = CURRENCIES[cs.value];
+      var usd = Number(pr.hourly) / old.r;
+      var untouched = Number(pr.hourly) === old.hour; // still the default → use the typical value for the new currency
+      pr.currency = cs.value;
+      pr.hourly = untouched || !(usd > 0) ? nw.hour : Math.max(1, Math.round(usd * nw.r));
+      $("#pHourly").value = pr.hourly;
+      $("#curSym").textContent = currencySymbol();
+      save();
+    });
+  }
+
+  /* ===================== Events ===================== */
+  function initEvents() {
+    $("#searchForm").addEventListener("submit", function (e) { e.preventDefault(); setQuery(els.q.value); els.q.blur(); scrollToEl($("#resultsTitle")); });
+    var live;
+    els.q.addEventListener("input", function () {
+      clearTimeout(live);
+      live = setTimeout(function () { state.query = els.q.value; state.showAll = false; renderResults(); }, 220);
+    });
+    $("#goalChips").innerHTML = CHIPS.map(function (c) { return '<button type="button" class="chip" data-q="' + esc(c[2]) + '"><span aria-hidden="true">' + c[0] + "</span>" + esc(c[1]) + "</button>"; }).join("");
+
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest("button, a") : null;
+      if (!t) return;
+      if (t.hasAttribute("data-q")) { closeModal(); setQuery(t.getAttribute("data-q")); scrollToEl($("#resultsTitle")); return; }
+      if (t.hasAttribute("data-info")) { openDetails(t.getAttribute("data-info")); return; }
+      if (t.hasAttribute("data-remove")) { togglePlan(t.getAttribute("data-remove")); return; }
+      if (t.hasAttribute("data-uncmp")) { toggleCompare(t.getAttribute("data-uncmp")); return; }
+      if (t.hasAttribute("data-saved")) { var c = wikiCache()[t.getAttribute("data-saved")]; if (c) $("#explainOut").innerHTML = explainHtml(Object.assign({ cached: true }, c)); return; }
+      if (t.id === "clearRecent") { state.recent = []; store.set("recent", []); renderRecent(); return; }
+      var act = t.getAttribute("data-act");
+      if (act) {
+        var card = t.closest(".item"), id = card && card.getAttribute("data-id");
+        if (!id) return;
+        if (act === "add") togglePlan(id);
+        else if (act === "cmp") toggleCompare(id);
+        else if (act === "info") openDetails(id);
+      }
+    });
+
+    $$(".seg button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.type = b.getAttribute("data-type"); state.showAll = false;
+        $$(".seg button").forEach(function (x) { var on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-pressed", String(on)); });
+        renderResults();
+      });
+    });
+    $("#sort").addEventListener("change", function (e) { state.sort = e.target.value; renderResults(); });
+    els.moreBtn.addEventListener("click", function () { state.showAll = true; renderResults(); });
+    $("#shareBtn").addEventListener("click", function () {
+      var t = state.query.trim();
+      share(CONFIG.appName, t ? "What’s worth it for: " + t : "Find what’s worth it for you", baseUrl() + (t ? "#q=" + encodeURIComponent(t) : ""));
+    });
+    $("#weekBtn").addEventListener("click", openWeek);
+    $("#exportBtn").addEventListener("click", function () {
+      if (!state.plan.length) { toast("Your plan is empty"); return; }
+      if (proGate("Downloading your plan")) download("worthit-plan.txt", weekText());
+    });
+    $("#clearPlanBtn").addEventListener("click", function () {
+      if (!state.plan.length) return;
+      if (!confirm("Remove all " + state.plan.length + " picks from your plan?")) return;
+      state.plan = []; store.set("plan", []); renderPlan(); renderResults(); toast("Plan cleared");
+    });
+    $("#compareBtn").addEventListener("click", openCompare);
+    $("#trayClear").addEventListener("click", function () { state.compare = []; renderTray(); renderResults(); });
+    $("#explainForm").addEventListener("submit", function (e) { e.preventDefault(); runExplain($("#explainQ").value); });
+    $("#proBtn").addEventListener("click", function () { openPro(); });
+    $("#aboutBtn").addEventListener("click", openAbout);
+    $("#brandLink").addEventListener("click", function (e) { e.preventDefault(); setQuery("", { noRecent: true }); window.scrollTo(0, 0); });
+    $("#modalClose").addEventListener("click", closeModal);
+    els.modal.addEventListener("click", function (e) { if (e.target === els.modal) closeModal(); });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { closeModal(); hideTip(); return; }
+      if (e.key === "/" && !/^(input|textarea|select)$/i.test(document.activeElement.tagName) && els.modal.hidden) { e.preventDefault(); els.q.focus(); return; }
+      if (e.key === "Tab" && !els.modal.hidden) {
+        var f = $$('button, a[href], input, select, [tabindex]:not([tabindex="-1"])', els.modalCard).filter(function (x) { return !x.disabled && x.offsetParent !== null; });
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    // plan bar tooltips (hover + keyboard focus)
+    els.planBody.addEventListener("mousemove", function (e) { var b = e.target.closest(".bar"); if (b) showTip(b, e.clientX, e.clientY); else hideTip(); });
+    els.planBody.addEventListener("mouseleave", hideTip);
+    els.planBody.addEventListener("focusin", function (e) { var b = e.target.closest(".bar"); if (b) { var r = b.getBoundingClientRect(); showTip(b, r.left + r.width / 2, r.top); } });
+    els.planBody.addEventListener("focusout", hideTip);
+    window.addEventListener("scroll", hideTip, { passive: true });
+
+    // theme
+    $("#themeBtn").addEventListener("click", function () {
+      var dark = document.documentElement.getAttribute("data-theme") ? document.documentElement.getAttribute("data-theme") === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+      var next = dark ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      store.set("theme", next);
+    });
+
+    // connectivity
+    window.addEventListener("online", function () { updateNet(); toast("You’re back online"); processPending(); });
+    window.addEventListener("offline", function () { updateNet(); toast("Offline — search, scores and your plan still work"); });
+
+    // deep links
+    window.addEventListener("hashchange", function () { var q = readHash(); if (q !== state.query.trim()) setQuery(q, { noRecent: true }); });
+
+    // rotating placeholder
+    var pi = 0;
+    setInterval(function () {
+      if (document.activeElement === els.q || els.q.value) return;
+      pi = (pi + 1) % PLACEHOLDERS.length; els.q.placeholder = PLACEHOLDERS[pi];
+    }, 3500);
+  }
+  function readHash() {
+    var m = /[#&]q=([^&]*)/.exec(location.hash || "");
+    if (!m) return "";
+    try { return decodeURIComponent(m[1]).slice(0, 120); } catch (e) { return ""; }
+  }
+
+  /* ===================== PWA (only when hosted over http/https) ===================== */
+  var deferredInstall = null;
+  function initPWA() {
+    if (!/^https?:$/.test(location.protocol)) return; // opened as a local file: already fully offline
+    var link = document.createElement("link"); link.rel = "manifest"; link.href = "manifest.webmanifest";
+    document.head.appendChild(link);
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* optional enhancement */ }); });
+    }
+    window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredInstall = e; $("#installBtn").hidden = false; });
+    $("#installBtn").addEventListener("click", function () {
+      if (!deferredInstall) return;
+      deferredInstall.prompt();
+      deferredInstall.userChoice.then(function () { deferredInstall = null; $("#installBtn").hidden = true; }).catch(function () { });
+    });
+    window.addEventListener("appinstalled", function () { $("#installBtn").hidden = true; toast("Installed — open it any time, even offline"); });
+  }
+
+  /* ===================== Boot ===================== */
+  function boot() {
+    var th = store.get("theme", null);
+    if (th === "light" || th === "dark") document.documentElement.setAttribute("data-theme", th);
+    document.title = CONFIG.appName + " — " + CONFIG.tagline;
+    $("#appName").textContent = CONFIG.appName; $("#appTag").textContent = CONFIG.tagline; $("#footName").textContent = CONFIG.appName;
+    $("#dataAsOf").textContent = CONFIG.dataAsOf; $("#ver").textContent = CONFIG.version;
+    if (!CONFIG.pro.enabled) $("#proBtn").textContent = "Pro (free now)";
+    initProfile();
+    initEvents();
+    initPWA();
+    renderTrends();
+    renderRecent();
+    renderSaved();
+    updateNet();
+    var q = readHash();
+    if (q) setQuery(q, { noRecent: true }); else renderResults();
+    renderPlan(); renderTray();
+    processPending();
+  }
+  try { boot(); }
+  catch (err) {
+    var m = document.getElementById("results");
+    if (m) m.innerHTML = '<div class="card empty-state" style="grid-column:1/-1"><h3>Something went wrong loading the guide.</h3><p class="muted">Please reload the page. If it keeps happening, try another browser.</p></div>';
+    if (window.console) console.warn("WorthIt boot error:", err);
+  }
+})();
+</script>
+</body>
+</html>
