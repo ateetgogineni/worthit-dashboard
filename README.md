@@ -1,5 +1,7 @@
 # WorthIt — find what’s worth it for you
 
+![WorthIt dashboard](docs/screenshot.png)
+
 A single-page dashboard. A visitor types a goal ("earn money from home", "pass my exams") and gets
 the world’s most in-demand tools and free methods ranked by a **personal Worth-It score**, with
 the time and money value *for them*, a break-even line, a benefit plan and a 7-day action plan.
