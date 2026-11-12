@@ -1,5 +1,7 @@
 # WorthIt — find what’s worth it for you
 
+**▶ Live demo: [https://ateetgogineni.github.io/worthit-dashboard/](https://ateetgogineni.github.io/worthit-dashboard/)**
+
 ![WorthIt dashboard](docs/screenshot.png)
 
 A single-page dashboard. A visitor types a goal ("earn money from home", "pass my exams") and gets
